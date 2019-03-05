@@ -1,16 +1,15 @@
 from tkinter import *
 import csv
 questionlist = []
-tempno = 0
 
 
 class assessment(Frame):
 
     def __init__(self, master=None):
         Frame.__init__(self,master)
+        self.tempno = 0
         self.master = master
         self.init_window()
-        self.readfile()
         self.text()
         self.buttonPlace()
 
@@ -20,12 +19,7 @@ class assessment(Frame):
         self.entName = Entry(self)
         self.entName.grid(column=2,row=2,padx =10, pady= 10)
 
-    def client_exit(self):
-        tempno += 1
-        return tempno
-        
-
-    def readfile(self):
+    def open_file(self):
         with open("examtest.txt") as csv_file:
             csv_reader = csv.reader(csv_file,delimiter=",")
             line_count = 0
@@ -35,7 +29,16 @@ class assessment(Frame):
                 else:
                     templist = [row[0],row[1],row[2]]
                     questionlist.append(templist)
-                    return questionlist
+        return questionlist
+
+    def client_next(self,tempno):
+        tempno += 1
+        return tempno
+
+        
+    
+    def client_exit(self):
+        quit()
 
         
         '''with open("examtest.txt") as csv_file:
@@ -51,14 +54,15 @@ class assessment(Frame):
                     return questionno, question, answer'''
                 
     def text(self):
-        tempno = self.client_exit()
+        questionlist = self.open_file()
+        tempno = 0
         text = Label(self, text="Question {}".format(questionlist[tempno][0]),font="bold")
         text.grid(row=0,column=2,pady=5)
         text2 = Label(self, text="{}".format(questionlist[tempno][1]))
         text2.grid(row=1,column=2,pady=2)
 
     def buttonPlace(self):
-        nextButton = Button(self, text="Next", command=self.client_exit)
+        nextButton = Button(self, text="Next", command=self.client_next)
         nextButton.grid(column = 3,row = 3,sticky=E)
         quitButton = Button(self, text="Quit", command=self.client_exit)
         quitButton.grid(column=1,row=3, sticky=E)
