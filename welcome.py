@@ -133,6 +133,7 @@ class Welcome(Frame):
                     #t1.title("Test")
                     Test.test_file(testName, testType.upper(), strModule, name)
                     print('...Test Created...\n'+72*'-'+'\nTest Name: {0:30}Type: {1:12}Teacher: {2:30}\n'.format(testName, 'Formative' if testType.upper() == 'F' else 'Summative', name))
+                    self.checkTest()
                 else:
                     messagebox.showwarning("ERROR", "Enter F or S!")
             elif testName:
