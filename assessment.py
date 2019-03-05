@@ -1,7 +1,7 @@
 from tkinter import *
 import csv
 questionlist = []
-
+question_nr = 0
 
 class assessment(Frame):
 
@@ -12,6 +12,7 @@ class assessment(Frame):
         self.init_window()
         self.text()
         self.buttonPlace()
+        self.question_nr = 0
 
     def init_window(self):
         self.master.title("Question")
@@ -31,14 +32,31 @@ class assessment(Frame):
                     questionlist.append(templist)
         return questionlist
 
-    def client_next(self,tempno):
-        tempno += 1
-        return tempno
+    def client_next(self):
+        global question_nr
+        print(len(questionlist))
+        if question_nr >= len(questionlist)-1:
+            print("No more questions")
+        else:
+            question_nr += 1
+            self.settext(question_nr,questionlist)
+
+    def client_back(self):
+        global question_nr
+        print(len(questionlist))
+        if question_nr <= 0:
+            print("")
+        else:
+            question_nr -= 1
+            self.settext(question_nr,questionlist)
 
         
     
     def client_exit(self):
         quit()
+
+    def client_submit(self):
+        pass
 
         
         '''with open("examtest.txt") as csv_file:
@@ -52,20 +70,29 @@ class assessment(Frame):
                     question = row[1]
                     answer = row[2]
                     return questionno, question, answer'''
-                
+
+    def settext(self,question_nr,questionlist):
+        text = Label(self, text="Question {}".format(questionlist[question_nr][0]),font="bold")
+        text.grid(row=0,column=2,pady=5)
+        text2 = Label(self, text="{}".format(questionlist[question_nr][1]))
+        text2.grid(row=1,column=2,pady=2)
+        
     def text(self):
         questionlist = self.open_file()
-        tempno = 0
-        text = Label(self, text="Question {}".format(questionlist[tempno][0]),font="bold")
+        text = Label(self, text="Question {}".format(questionlist[0][0]),font="bold")
         text.grid(row=0,column=2,pady=5)
-        text2 = Label(self, text="{}".format(questionlist[tempno][1]))
+        text2 = Label(self, text="{}".format(questionlist[0][1]))
         text2.grid(row=1,column=2,pady=2)
 
     def buttonPlace(self):
         nextButton = Button(self, text="Next", command=self.client_next)
-        nextButton.grid(column = 3,row = 3,sticky=E)
+        nextButton.grid(column = 4,row = 3,sticky=E)
         quitButton = Button(self, text="Quit", command=self.client_exit)
-        quitButton.grid(column=1,row=3, sticky=E)
+        quitButton.grid(column=2,row=3, sticky=E)
+        backButton = Button(self, text="Back", command=self.client_back)
+        backButton.grid(column=3,row=3, sticky=E)
+        submitButton = Button(self, text="Save Answer", command=self.client_submit)
+        submitButton.grid(column=1,row=3, sticky=E)
 
 
 root = Tk()
