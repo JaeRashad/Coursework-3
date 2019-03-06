@@ -42,7 +42,6 @@ class Welcome(Frame):
         self.listTest.grid(row=7, column=0, columnspan=2, sticky=NE)
         scroll.grid(row=7, column=7, sticky=W)
         
-        
     def retrieveModules(self):
         modules_list = []
         with open('user_modules.csv') as csvfile:
@@ -60,6 +59,7 @@ class Welcome(Frame):
         with open('tests_overview.csv') as csvfile:
             rdr = csv.reader(csvfile)
             for row in rdr:
+                #print(row[0])
                 if row[0] == module:#Might need to add in the fact that a test gets taken
                     test_list.append(row[1])
         if len(test_list) == 0:
@@ -124,13 +124,18 @@ class Welcome(Frame):
             #print(strModule)
             name = login.name
             testName = simpledialog.askstring("Input", "Enter test name")
+            testType = simpledialog.askstring("Input", "Formative Test: F, Summative Test: S")
             # if testName isn't None or "" AND the file doesn't already exist 
-            if testName and os.path.isfile('.\\{}.csv'.format(testName)) == False: 
-                import Test
-                #t1 = Toplevel()
-                #t1.title("Test")
-                Test.test_file(testName, strModule, name)
-                print('Test Created\nTest Name: {0:20}Teacher: {1:20}\n'.format(testName, name))
+            if testName and os.path.isfile('.\\{}.csv'.format(testName)) == False:
+                if testType.upper() == 'F' or testType.upper() == 'S':
+                    import Test
+                    #t1 = Toplevel()
+                    #t1.title("Test")
+                    Test.test_file(testName, testType.upper(), strModule, name)
+                    print('...Test Created...\n'+72*'-'+'\nTest Name: {0:30}Type: {1:12}Teacher: {2:30}\n'.format(testName, 'Formative' if testType.upper() == 'F' else 'Summative', name))
+                    self.checkTest()
+                else:
+                    messagebox.showwarning("ERROR", "Enter F or S!")
             elif testName:
                 messagebox.showwarning("ERROR", "Test with that name already exists!")
             else:

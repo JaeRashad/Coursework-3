@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 module,test name,teacher
 CM1103,Java,Tim
 CM1103,testing,Tim
@@ -7,3 +8,14 @@ CM1101,web apps,Damjan
 CM2202,Testing,Tim
 CM1101,in CM1101,Tim
 CM1105,java,Damjan
+=======
+module,test name,test type,teacher
+CM1103,Java,F,Tim
+CM1103,testing,F,Tim
+CM2101,Maths,F,Tim
+CM1101,in CM1101,F,Tim
+CM1103,cm1103_test,F,Tim
+CM1101,dsgop,F,Tim
+CM1101,fgdl,S,Tim
+CM1101,dgf,F,Tim
+>>>>>>> e3719f919a79955b51643a0e3f943e55a0bdefbe

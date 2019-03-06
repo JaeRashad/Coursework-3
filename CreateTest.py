@@ -29,38 +29,42 @@ class Create_Test(Frame):
         lblAnswer = Label(self, text = 'Choice 1', font=('MS', 8,'bold'))
         lblAnswer.grid(row=13, column= 4, rowspan=2)
         #rename this
-        self.varCB1 = IntVar()
-        CB1 = Checkbutton(self, text="Correct Question", variable=self.varCB1)
-        CB1.grid(row=13, column=5, columnspan=1, sticky=W)
         self.Answer1 = Text(self, height=1,width=40)
         self.Answer1.grid(row=16, column=2,columnspan=5, sticky=E)
         lblAnswer = Label(self, text = 'Choice 2', font=('MS', 8,'bold'))
         lblAnswer.grid(row=17, column= 4, rowspan=2)
-        #rename this
-        self.varCB2 = IntVar()
-        CB1 = Checkbutton(self, text="Correct Question", variable=self.varCB2)
-        CB1.grid(row=17, column=5, columnspan=1, sticky=W)
         self.Answer2 = Text(self, height=1,width=40)
         self.Answer2.grid(row=20, column=2,columnspan=5, sticky=E)
         lblAnswer = Label(self, text = 'Choice 3', font=('MS', 8,'bold'))
         lblAnswer.grid(row=21, column= 4, rowspan=2)
-        #rename this
-        self.varCB3 = IntVar()
-        CB1 = Checkbutton(self, text="Correct Question", variable=self.varCB3)
-        CB1.grid(row=21, column=5, columnspan=1, sticky=W)
         self.Answer3 = Text(self, height=1,width=40)
         self.Answer3.grid(row=24, column=2,columnspan=5, sticky=E)
         lblAnswer = Label(self, text = 'Choice 4', font=('MS', 8,'bold'))
         lblAnswer.grid(row=25, column= 4, rowspan=2)
-        #rename this
-        self.varCB4 = IntVar()
-        CB1 = Checkbutton(self, text="Correct Question", variable=self.varCB4)
-        CB1.grid(row=25, column=5, columnspan=1, sticky=W)
         self.Answer4 = Text(self, height=1,width=40)
         self.Answer4.grid(row=28, column=2,columnspan=5, sticky=E)
-
+        
         self.isQuestionSaved()
-
+        
+        #self.varCB1 = IntVar()
+        CB1 = Checkbutton(self, text="Correct Question", variable=self.varCB1)
+        CB1.grid(row=13, column=5, columnspan=1, sticky=W)
+        
+        #rename this
+        #self.varCB2 = IntVar()
+        CB2 = Checkbutton(self, text="Correct Question", variable=self.varCB2)
+        CB2.grid(row=17, column=5, columnspan=1, sticky=W)
+        
+        #rename this
+        #self.varCB3 = IntVar()
+        CB3 = Checkbutton(self, text="Correct Question", variable=self.varCB3)
+        CB3.grid(row=21, column=5, columnspan=1, sticky=W)
+        
+        #rename this
+        #self.varCB4 = IntVar()
+        CB4 = Checkbutton(self, text="Correct Question", variable=self.varCB4)
+        CB4.grid(row=25, column=5, columnspan=1, sticky=W)
+        
         #print(counter)
         #print(questionNumber)
 
@@ -84,12 +88,20 @@ class Create_Test(Frame):
                 self.Answer2.insert(END, data[2])
                 self.Answer3.insert(END, data[3])
                 self.Answer4.insert(END, data[4])
+                self.varCB1 = IntVar(value=int(data[5]))
+                self.varCB2 = IntVar(value=int(data[6]))
+                self.varCB3 = IntVar(value=int(data[7]))
+                self.varCB4 = IntVar(value=int(data[8]))
         else:
             self.Question.insert(END, "INPUT QUESTION HERE")
             self.Answer1.insert(END, "INPUT FIRST CHOICE HERE")
             self.Answer2.insert(END, "INPUT SECOND CHOICE HERE")
             self.Answer3.insert(END, "INPUT THIRD CHOICE HERE")
             self.Answer4.insert(END, "INPUT FOURTH CHOICE HERE")
+            self.varCB1 = IntVar()
+            self.varCB2 = IntVar()
+            self.varCB3 = IntVar()
+            self.varCB4 = IntVar()
 
     def createButtons(self):
         butNextQuestion = Button(self, text='Next Question',font=('MS', 8,'bold'))
@@ -137,7 +149,11 @@ class Create_Test(Frame):
                     csv_file.write(self.Answer1.get("1.0","end-1c")+",")
                     csv_file.write(self.Answer2.get("1.0","end-1c")+",")
                     csv_file.write(self.Answer3.get("1.0","end-1c")+",")
-                    csv_file.write(self.Answer4.get("1.0","end-1c")+"\n")
+                    csv_file.write(self.Answer4.get("1.0","end-1c")+",")
+                    csv_file.write(str(self.varCB1.get())+",")
+                    csv_file.write(str(self.varCB2.get())+",")
+                    csv_file.write(str(self.varCB3.get())+",")
+                    csv_file.write(str(self.varCB4.get())+"\n")
                 saved_questions.append(questionNumber)
             else:
                 old[questionNumber-1][0] = (self.Question.get("1.0", "end-1c"))
@@ -145,6 +161,10 @@ class Create_Test(Frame):
                 old[questionNumber-1][2] = (self.Answer2.get("1.0", "end-1c"))
                 old[questionNumber-1][3] = (self.Answer3.get("1.0", "end-1c"))
                 old[questionNumber-1][4] = (self.Answer4.get("1.0", "end-1c"))
+                old[questionNumber-1][5] = (str(self.varCB1.get()))
+                old[questionNumber-1][6] = (str(self.varCB2.get()))
+                old[questionNumber-1][7] = (str(self.varCB3.get()))
+                old[questionNumber-1][8] = (str(self.varCB4.get()))
                 with open(self.filename, 'w') as writer:
                     for i in old:
                         length = 1
@@ -161,7 +181,11 @@ class Create_Test(Frame):
                 csv_file.write(self.Answer1.get("1.0","end-1c")+",")
                 csv_file.write(self.Answer2.get("1.0","end-1c")+",")
                 csv_file.write(self.Answer3.get("1.0","end-1c")+",")
-                csv_file.write(self.Answer4.get("1.0","end-1c")+"\n")
+                csv_file.write(self.Answer4.get("1.0","end-1c")+",")
+                csv_file.write(str(self.varCB1.get())+",")
+                csv_file.write(str(self.varCB2.get())+",")
+                csv_file.write(str(self.varCB3.get())+",")
+                csv_file.write(str(self.varCB4.get())+"\n")
             saved_questions.append(questionNumber)
             create_file += 1
 
