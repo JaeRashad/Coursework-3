@@ -113,6 +113,12 @@ class Welcome(Frame):
             CreateTest.Create_Test(t1, testfile+'.csv')
         else:
             messagebox.showwarning("ERROR", "Please a pick an existing test to edit.")
+    def editTestFast(self, testfile):
+        if self.listTest.curselection() != ():
+            t1 = Toplevel()
+            t1.title("Test")
+            import CreateTest
+            CreateTest.Create_Test(t1, testfile+'.csv')
     def createTest(self):
         """ This method creates an empty test csv file with a filename specified by the user in a 
             dialog box that appears. It then appends the test's metadata (teacher, testname, module) 
@@ -134,6 +140,7 @@ class Welcome(Frame):
                     Test.test_file(testName, testType.upper(), strModule, name)
                     print('...Test Created...\n'+72*'-'+'\nTest Name: {0:30}Type: {1:12}Teacher: {2:30}\n'.format(testName, 'Formative' if testType.upper() == 'F' else 'Summative', name))
                     self.checkTest()
+                    self.editTestFast(testName)
                 else:
                     messagebox.showwarning("ERROR", "Enter F or S!")
             elif testName:
