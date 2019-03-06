@@ -34,7 +34,7 @@ class Welcome(Frame):
         modules_list = self.retrieveModules()
         for module in modules_list:
             self.listProg.insert(END, module)
-            self.listProg.selection_set(END)
+            #self.listProg.selection_set(END)
 
         self.listTest = Listbox(self, height= 3)
         scroll = Scrollbar(self, command= self.listTest.yview)
