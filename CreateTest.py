@@ -69,8 +69,13 @@ class Create_Test(Frame):
         #print(questionNumber)
 
     def isQuestionSaved(self):
+        tests_list = self.retrieveTests()
         for number in saved_questions:
             if questionNumber == number:
+                self.printTextBox(True)
+                return
+        for test in tests_list:
+            if test == self.filename[:-4]:
                 self.printTextBox(True)
                 return
         self.printTextBox(False)
@@ -81,8 +86,16 @@ class Create_Test(Frame):
                 r = csv.reader(test)
                 if questionNumber != 1:
                     for i in range(questionNumber - 1):
-                        next(r)
-                data = next(r)
+                        try:
+                            next(r)
+                        except:
+                            self.printTextBox(False)
+                            return
+                try:
+                    data = next(r)
+                except:
+                        self.printTextBox(False)
+                        return
                 self.Question.insert(END, data[0])
                 self.Answer1.insert(END, data[1])
                 self.Answer2.insert(END, data[2])
@@ -102,6 +115,20 @@ class Create_Test(Frame):
             self.varCB2 = IntVar()
             self.varCB3 = IntVar()
             self.varCB4 = IntVar()
+
+    def retrieveTests(self):
+        tests_list = []
+        counter = 0
+        with open('tests_overview.csv') as csvfile:
+            rdr = csv.reader(csvfile)
+            for row in rdr:
+                if counter == 0:
+                    counter = 1
+                else:
+                    tests_list.append(row[1])
+                    
+        return tests_list
+        
 
     def createButtons(self):
         butNextQuestion = Button(self, text='Next Question',font=('MS', 8,'bold'))
