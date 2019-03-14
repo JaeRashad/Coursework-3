@@ -4,6 +4,7 @@ import csv
 questionNumber = 1
 create_file = 0
 saved_questions=[]
+
 #filename=str()
 #def createTest():
 
@@ -11,8 +12,9 @@ class Create_Test(Frame):
 # GUI Setup
     def __init__ (self, master, filename):
 # Initialise Questionnaire Class
-        Frame.__init__(self, master)
         self.filename = filename
+        self.load_saved_questions()
+        Frame.__init__(self, master)
         self.grid()
         self.createTest()
         self.createButtons()
@@ -67,6 +69,17 @@ class Create_Test(Frame):
         
         #print(counter)
         #print(questionNumber)
+
+    def load_saved_questions(self):
+        r = csv.reader(open(self.filename, 'r'))
+        old = list(r)
+        temp_questionNum = 0
+        try:
+            for line in old:
+                temp_questionNum += 1
+                saved_questions.appned(temp_questionNum)
+        except:
+            return
 
     def isQuestionSaved(self):
         tests_list = self.retrieveTests()
@@ -153,6 +166,26 @@ class Create_Test(Frame):
         
     def nextQuestion(self):
         global questionNumber
+        r = csv.reader(open(self.filename, 'r'))
+        old = list(r)
+        if self.Question.get("1.0", "end-1c") == "INPUT QUESTION HERE" or self.Question.get("1.0", "end-1c") == "":
+            messagebox.showwarning("Note!", "Please fill out the question before proceeding!")
+            return
+        if old[questionNumber-1][0] != self.Question.get("1.0", "end-1c"):
+            messagebox.showwarning("Note!", "You have made a change to question number: " + str(questionNumber) + "\n Please save your changes before you continue")
+            return
+        if old[questionNumber-1][1] != self.Answer1.get("1.0", "end-1c"):
+            messagebox.showwarning("Note!", "You have made a change to question number: " + str(questionNumber) + "\n Please save your changes before you continue")
+            return
+        if old[questionNumber-1][2] != self.Answer2.get("1.0", "end-1c"):
+            messagebox.showwarning("Note!", "You have made a change to question number: " + str(questionNumber) + "\n Please save your changes before you continue")
+            return
+        if old[questionNumber-1][3] != self.Answer3.get("1.0", "end-1c"):
+            messagebox.showwarning("Note!", "You have made a change to question number: " + str(questionNumber) + "\n Please save your changes before you continue")
+            return
+        if old[questionNumber-1][4] != self.Answer4.get("1.0", "end-1c"):
+            messagebox.showwarning("Note!", "You have made a change to question number: " + str(questionNumber) + "\n Please save your changes before you continue")
+            return
         questionNumber += 1
         self.createTest()
 
