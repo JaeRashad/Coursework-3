@@ -5,11 +5,11 @@ import csv
 class test_file:
 	""" Common base class for all test types """
 
-	def __init__ (self, testName, testType, module, teacherName):
+	def __init__ (self, testName, testType, module, teacherName, timeLimit):
 		#Frame.__init__(self, master)
 		open(testName+'.csv', mode='w')
 		with open("tests_overview.csv", mode = 'a') as csvfile:
-			csvfile.write('{},{},{},{}\n'.format(module, testName, testType, teacherName))
+			csvfile.write('{},{},{},{},{}\n'.format(module, testName, testType, teacherName, timeLimit))
 		
 
 
