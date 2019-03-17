@@ -9,11 +9,7 @@ question_nr = 0
 
 
 class Take_Test(Frame):
-	""" 	TAKE SUMMATIVE TEST 
-		- only one attempt allowed
-		- time limit
-		- student musn't be able to view answers until deadline
-		- but can veiw feedback
+	""" 	TAKE SUMMATIVE OR FORMATIVE TEST
 	"""
 
 	def __init__(self, master, testName, timelimit, student, attempts = 0):
