@@ -168,7 +168,7 @@ class Welcome(Frame):
                     name, 'No time limit' if testType.upper() == 'F' else str(testDuration) + ' minutes'))
                 self.checkTest()
                 self.editTestFast(testName)
-                print(test_list)
+                #print(test_list)
             elif testName:
                 messagebox.showwarning("ERROR", "Test with that name already exists!")
                 return
@@ -182,13 +182,13 @@ class Welcome(Frame):
     def takeTest(self):
         index = self.listTest.curselection()[0]
         testName= str(self.listTest.get(index))
-        print(testName)
+        print("Taking Test:", testName)
         import shelve
         #> open the database situated in the test_results folder.
         #> 
         #> Retrieve test duration
         timeLimit = [i[1] for i in test_list if i[0] == testName]
-        print(timeLimit)
+        #print(timeLimit)
         db = shelve.open("test_results/"+testName+"_results")
         #check if students ID exists in database, if it returns True then do not allow student to take test if test (if test is summative)
         try:

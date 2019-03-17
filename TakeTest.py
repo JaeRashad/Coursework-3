@@ -38,7 +38,7 @@ class Take_Test(Frame):
 			self.master.after(100000000000, self.timeUp)
 		else:
 			duration = int(self.timelimit[0])*60000
-			print(duration)
+			print("Test Duration:",duration / 60000, "minutes")
 			self.master.after(duration, self.timeUp)
 	
 	def timeUp(self):
@@ -92,6 +92,7 @@ class Take_Test(Frame):
 		db = shelve.open("test_results/"+self.testName + "_results")
 		db[submission.ID] = submission
 		db.close()
+		print()
 		print(submission.toString())
 		global questionList 
 		questionList = []
@@ -123,7 +124,7 @@ class Take_Test(Frame):
 			messagebox.showinfo("Test","No more questions")
 		else:
 			question_nr += 1
-			print(question_nr+1)
+			#print(question_nr+1)
 			self.update(question_nr)
 			
 	def client_back(self):
@@ -143,7 +144,7 @@ class Take_Test(Frame):
 	
 	def on_save(self):
 		global question_nr, answers
-		print(questionList[question_nr][0])
+		#print(questionList[question_nr][0])
 		#print(answers)
 		# if answer for a question already exist, replace them
 		#try:
@@ -155,8 +156,8 @@ class Take_Test(Frame):
 		print(answers)
 
 	def get_questions(self):
-		print("In TakeTest.py : ", self.testName)
-		print(questionList)
+		#print("In TakeTest.py : ", self.testName)
+		#print(questionList)
 		with open(self.testName+".csv") as csv_file:
 			csv_reader = csv.reader(csv_file,delimiter=",")
 			line_count = 0

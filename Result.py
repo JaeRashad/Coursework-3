@@ -8,4 +8,4 @@ class result(object):
 		self.answers = answers
 	
 	def toString(self):
-		return f'{self.ID}\n{self.answers}'
+		return f'Test Submitted\nUserID: {self.ID}\nAnswers: {self.answers}'
