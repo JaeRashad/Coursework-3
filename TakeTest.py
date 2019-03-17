@@ -16,27 +16,29 @@ class Take_Test(Frame):
 		- but can veiw feedback
 	"""
 
-	def __init__(self, master, testName, timelimit, student):
+	def __init__(self, master, testName, timelimit, student, attempts = 0):
 		Frame.__init__(self, master)
 		self.testName = testName
 		self.student = student
 		self.timelimit = timelimit
+		self.attempts = attempts
 		self.get_questions()
 		self.master.title(testName)
 		self.initWindow()
 		self.buttonPlace()
+		if self.attempts == 2:
+			messagebox.showwarning("Warning", "This is your final attempt!")
 		global question_nr
 		question_nr = 0
-		# the double underscore prefix means the answers are unaccessable outside of the class instance
-		# Attempting to do so returns an AttributeError: 'Take_Test' object has no attribute '__answers'
 		global answers
 		# 
 		answers = [[0]*4]*len(questionList)
-		# set timelimit, number in milliseconds
+		#> set timelimit, number in milliseconds
 		if str(self.timelimit[0]) == 'No':
 			# simulates no time limit
 			self.master.after(100000000000, self.timeUp)
 		else:
+			#> convert ['n'] in to int
 			duration = int(self.timelimit[0])*60000
 			print("Test Duration:",duration / 60000, "minutes")
 			self.master.after(duration, self.timeUp)
@@ -86,17 +88,19 @@ class Take_Test(Frame):
 
 	def actualSubmit(self):
 		from Result import result 
-		submission = result(self.student, answers)
+		submission = result(self.student, answers, self.attempts)
 		import shelve
 		#> Test results files will be named testName_results
 		db = shelve.open("test_results/"+self.testName + "_results")
 		db[submission.ID] = submission
-		db.close()
 		print()
 		print(submission.toString())
 		global questionList 
 		questionList = []
-		self.client_exit()		
+		print(f'Test Submitted\nUserID: {self.student}\tAttempt: {self.attempts+1} \nAnswers: {answers}')
+		db.close()
+		self.client_exit()
+
 	def submit(self, isTimeUp = False):
 		if isTimeUp == False:
 			if messagebox.askokcancel("Submit", "Are you sure you want to submit your answers?"):
