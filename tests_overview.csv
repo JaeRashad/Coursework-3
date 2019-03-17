@@ -1,19 +1,4 @@
-module,test name,test type,teacher
-CM1103,Java,F,Tim
-CM1103,testing,F,Tim
-CM2101,Maths,F,Tim
-CM1101,in CM1101,F,Tim
-CM1103,cm1103_test,F,Tim
-CM1101,dsgop,F,Tim
-CM1101,fgdl,S,Tim
-CM1101,dgf,F,Tim
-CM1102,DAM,F,Tim
-CM1102,DAM,S,Tim
-CM1102,DOMS,F,Tim
-CM1102,damajan,F,Tim
-<<<<<<< HEAD
-
-CM1101,Binary,F,Tim
-=======
-CM1105,test1,F,Damjan
->>>>>>> 94654f1897fdc5a9694b28c27863dcf22cc48de5
+module,test name,test type,teacher,time limit
+CM1101,Binary,F,Tim,No
+CM1101,Java,F,Tim,No
+CM1101,TestingTest_list,S,Tim,1
