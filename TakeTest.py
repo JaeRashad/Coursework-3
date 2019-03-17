@@ -1,6 +1,7 @@
 from tkinter import *
 from tkinter import messagebox
 import csv
+global questionList
 questionList = []
 question_nr = 0
 #labels = []
@@ -91,8 +92,8 @@ class Take_Test(Frame):
 		db[submission.ID] = submission
 		print()
 		print(submission.toString())
-		global questionList 
-		questionList = []
+		#global questionList 
+		#questionList = []
 		print(f'Test Submitted\nUserID: {self.student}\tAttempt: {self.attempts+1} \nAnswers: {answers}')
 		db.close()
 		self.client_exit()
@@ -106,6 +107,7 @@ class Take_Test(Frame):
 			
 	def update(self, questionNo): 
 		""" Updates labels with new question and answers"""
+		global questionList
 		self.varCB1.set(0)
 		self.varCB2.set(0)
 		self.varCB3.set(0)
@@ -140,6 +142,8 @@ class Take_Test(Frame):
 	
 	
 	def client_exit(self):
+		#global questionList
+		#questionList = []
 		self.master.destroy()
 	
 	def on_save(self):
@@ -158,6 +162,9 @@ class Take_Test(Frame):
 	def get_questions(self):
 		#print("In TakeTest.py : ", self.testName)
 		#print(questionList)
+		print("Getting questions")
+		global questionList
+		questionList=[]
 		with open(self.testName+".csv") as csv_file:
 			csv_reader = csv.reader(csv_file,delimiter=",")
 			line_count = 0
@@ -166,8 +173,8 @@ class Take_Test(Frame):
 				#	line_count += 1
 				#else:
 				templist = [row[0],row[1],row[2], row[3], row[4], row[5], row[6], row[7], row[8]]
-				#print(templist)
 				
+				#print(questionList)
 				questionList.append(templist)
 			
 		return questionList
