@@ -64,8 +64,10 @@ class Welcome(Frame):
             for row in rdr:
                 #print(row[0])
                 if row[0] == module:#Might need to add in the fact that a test gets taken
-                    #> row[4] is test duration, adding it to test_list mean the duration vars are more accessible 
-                    test_list.append((row[1], row[4])) 
+                    #> row[4] is TEST DURATION, adding it to test_list mean the duration vars are more accessible
+                    #> row[5] is ATTEMPTS  allowed - 1 for summative, 3 for formative
+                    #> row[2] is TEST TYPE
+                    test_list.append((row[1], row[4], row[5], row[2])) 
         if len(test_list) == 0:
             # rather than return empty list, return -1
             return -1
@@ -163,8 +165,10 @@ class Welcome(Frame):
                 import Test
                 #t1 = Toplevel()
                 #t1.title("Test")
+                
                 Test.test_file(testName, testType.upper(), strModule, name, testDuration)
-                print('...Test Created...\n'+120*'-'+'\nTest Name: {0:30}Type: {1:10}Teacher: {2:25}Duration: {3:9}\n'.format(testName, 'Formative' if testType.upper() == 'F' else 'Summative', 
+                
+                print('...Test Created...\n'+120*'-'+'\nTest Name: {0:30}|Type: {1:10}|Teacher: {2:25}|Duration: {3:9}\n'.format(testName, 'Formative' if testType.upper() == 'F' else 'Summative', 
                     name, 'No time limit' if testType.upper() == 'F' else str(testDuration) + ' minutes'))
                 self.checkTest()
                 self.editTestFast(testName)
@@ -188,14 +192,33 @@ class Welcome(Frame):
         #> 
         #> Retrieve test duration
         timeLimit = [i[1] for i in test_list if i[0] == testName]
-        #print(timeLimit)
+        attemptsAllowed = [i[2] for i in test_list if i[0] == testName]
+        testType = [i[3] for i in test_list if i[0] == testName]
+        testType = str(testType[0]) #> convert it to a string
+        print("attemptsAllowed =",attemptsAllowed[0])
+        print("testType =",testType)
         db = shelve.open("test_results/"+testName+"_results")
         #check if students ID exists in database, if it returns True then do not allow student to take test if test (if test is summative)
         try:
-            db[login.username]
-            messagebox.showinfo("Note", "You have already sat this test")
-            db.close()
-        except KeyError:
+            if testType == 'S':
+                db[login.username]
+                messagebox.showinfo("Can't take test!", "You have already sat this test")
+                db.close()
+
+            elif testType == 'F':
+                db[login.username]
+                attempts = db.get(str(login.username)).toString()[1]
+                print("You have made {} so far".format(attempts)) 
+                if attempts == 3:
+                    messagebox.showinfo("Can't take test!", "You have already used your final attempt")
+                    db.close()
+                else:
+                    import TakeTest
+                    t1 = Toplevel()
+                    t1.geometry("600x500")
+                    app = TakeTest.Take_Test(t1, testName, timeLimit, login.username, attempts)  
+                    
+        except KeyError: # if database for test doesn't contain student's userID, it will return KeyError
             db.close()
             import TakeTest
             t1 = Toplevel()
