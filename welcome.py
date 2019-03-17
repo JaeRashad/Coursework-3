@@ -182,6 +182,7 @@ class Welcome(Frame):
     def takeTest(self):
         index = self.listTest.curselection()[0]
         testName= str(self.listTest.get(index))
+        print(testName)
         import shelve
         #> open the database situated in the test_results folder.
         #> 

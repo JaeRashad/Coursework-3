@@ -93,6 +93,8 @@ class Take_Test(Frame):
 		db[submission.ID] = submission
 		db.close()
 		print(submission.toString())
+		global questionList 
+		questionList = []
 		self.client_exit()		
 	def submit(self, isTimeUp = False):
 		if isTimeUp == False:
@@ -153,6 +155,8 @@ class Take_Test(Frame):
 		print(answers)
 
 	def get_questions(self):
+		print("In TakeTest.py : ", self.testName)
+		print(questionList)
 		with open(self.testName+".csv") as csv_file:
 			csv_reader = csv.reader(csv_file,delimiter=",")
 			line_count = 0
@@ -162,8 +166,9 @@ class Take_Test(Frame):
 				#else:
 				templist = [row[0],row[1],row[2], row[3], row[4], row[5], row[6], row[7], row[8]]
 				#print(templist)
+				
 				questionList.append(templist)
-		
+			
 		return questionList
 
 """
