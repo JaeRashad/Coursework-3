@@ -1,4 +1,4 @@
-498 in Binary,00101111,10110111,10111111,10001101,0,0,1,0
+498 in Binary,00101111,10110111,111110010,10001101,0,0,1,0
 10101 in decimal,21,20,32,16,1,0,0,0
 What is binary?,Computer speak,Life and death,A series of 1s and 0s,Worse than decimal,0,0,1,0
 1111 in Decimal,4,15,16,22,0,1,0,0
@@ -9,4 +9,4 @@ Convert the floating point 10.001 in binary into decimal,2.25,2.001,10.125,2.125
 What is the bit string represented by Ox2D,00101100,00101101,01001101,01001100,0,1,0,0
 What is the output of an XOR gate with inputs 0 and 1?,0,10,1,01,0,0,1,0
 How many bytes is 5 Kbytes (kilo bytes) equivalent to?,5000 bytes,50000 bytes,5120 bytes,51200,0,0,1,0
-1011 + 101,110111,110011,111011,111100,1,0,0,0
+1011 + 101,10000,110011,111011,111100,1,0,0,0
