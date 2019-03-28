@@ -57,6 +57,8 @@ class Take_Test(Frame):
 		answ3.grid(row = 6, column = 6, pady = 4, columnspan = 1, sticky=W)
 		answ4 = Label(self, text="{}".format(questionList[0][4]), font = ('MS', 10,'normal'))
 		answ4.grid(row = 8, column = 6, pady =4 , columnspan = 1, sticky=W)
+		clock = Label(self, text="You have {} minutes ".format(self.timelimit[0]), font = ('Times', 14, 'italic'))
+		clock.grid(row=0, column=17, pady=5, columnspan = 8)
 		self.varCB1 = IntVar()
 		CB1 = Checkbutton(self, text="", variable=self.varCB1)
 		CB1.grid(row=2, column=4, columnspan=1, sticky=W)

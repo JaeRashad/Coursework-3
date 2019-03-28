@@ -85,12 +85,19 @@ class Welcome(Frame):
             butCreate.grid(row=8, column=0, columnspan=2)
             butEdit = Button(self, text='Edit Test', font=('MS', 8,'bold'), command=self.editTest)
             butEdit.grid(row = 8, column = 3, columnspan=2)
+            butView = Button(self, text='View', font=('MS', 8,'bold'), command=None)
+            butView.grid(row = 8, column = 2, columnspan=2)
         else:
             butTake = Button(self, text='Take TEST!',font=('MS', 8,'bold'), command = self.takeTest)#rename me to thing depending on whether or not you are a teacher
             butTake.grid(row=8, column=0, columnspan=2)
             butResult = Button(self, text='View Result',font=('MS', 8,'bold'), command = self.getResult)
             butResult.grid(row=8, column=3, columnspan=2)
 
+    def viewResults(self):
+        ''' Function to view the class results and individual student results '''
+        pass
+        
+        
     def checkTest(self):
         """ This function appends the tests available for a give 
                 module to the Listbox listTest
