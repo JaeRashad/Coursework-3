@@ -174,20 +174,41 @@ class Create_Test(Frame):
         if self.Question.get("1.0", "end-1c") == "INPUT QUESTION HERE" or self.Question.get("1.0", "end-1c") == "":
             messagebox.showwarning("Note!", "Please fill out the question before proceeding!")
             return
-        if old[questionNumber-1][0] != self.Question.get("1.0", "end-1c"):
-            messagebox.showwarning("Note!", "You have made a change to question number: " + str(questionNumber) + "\n Please save your changes before you continue")
+        try:
+            if old[questionNumber-1][0] != self.Question.get("1.0", "end-1c"):
+                messagebox.showwarning("Note!", "You have made a change to question number: " + str(questionNumber) + "\n Please save your changes before you continue")
+                return
+            if old[questionNumber-1][1] != self.Answer1.get("1.0", "end-1c"):
+                messagebox.showwarning("Note!", "You have made a change to question number: " + str(questionNumber) + "\n Please save your changes before you continue")
+                return
+            if old[questionNumber-1][2] != self.Answer2.get("1.0", "end-1c"):
+                messagebox.showwarning("Note!", "You have made a change to question number: " + str(questionNumber) + "\n Please save your changes before you continue")
+                return
+            if old[questionNumber-1][3] != self.Answer3.get("1.0", "end-1c"):
+                messagebox.showwarning("Note!", "You have made a change to question number: " + str(questionNumber) + "\n Please save your changes before you continue")
+                return
+            if old[questionNumber-1][4] != self.Answer4.get("1.0", "end-1c"):
+                messagebox.showwarning("Note!", "You have made a change to question number: " + str(questionNumber) + "\n Please save your changes before you continue")
+                return
+
+        except:
+            messagebox.showwarning("Note!", "Please save the question before proceeding!")
             return
-        if old[questionNumber-1][1] != self.Answer1.get("1.0", "end-1c"):
-            messagebox.showwarning("Note!", "You have made a change to question number: " + str(questionNumber) + "\n Please save your changes before you continue")
+
+        if self.Answer1.get("1.0", "end-1c") == "INPUT FIRST CHOICE HERE" or self.Answer1.get("1.0", "end-1c") == "":
+            messagebox.showwarning("Note!", "Please fill out the answers before proceeding!")
             return
-        if old[questionNumber-1][2] != self.Answer2.get("1.0", "end-1c"):
-            messagebox.showwarning("Note!", "You have made a change to question number: " + str(questionNumber) + "\n Please save your changes before you continue")
+        if self.Answer2.get("1.0", "end-1c") == "INPUT FIRST CHOICE HERE" or self.Answer2.get("1.0", "end-1c") == "":
+            messagebox.showwarning("Note!", "Please fill out the answers before proceeding!")
             return
-        if old[questionNumber-1][3] != self.Answer3.get("1.0", "end-1c"):
-            messagebox.showwarning("Note!", "You have made a change to question number: " + str(questionNumber) + "\n Please save your changes before you continue")
+        if self.Answer3.get("1.0", "end-1c") == "INPUT FIRST CHOICE HERE" or self.Answer3.get("1.0", "end-1c") == "":
+            messagebox.showwarning("Note!", "Please fill out the answers before proceeding!")
             return
-        if old[questionNumber-1][4] != self.Answer4.get("1.0", "end-1c"):
-            messagebox.showwarning("Note!", "You have made a change to question number: " + str(questionNumber) + "\n Please save your changes before you continue")
+        if self.Answer4.get("1.0", "end-1c") == "INPUT FIRST CHOICE HERE" or self.Answer4.get("1.0", "end-1c") == "":
+            messagebox.showwarning("Note!", "Please fill out the answers before proceeding!")
+            return
+        if self.varCB1.get() == 0 and self.varCB2.get() == 0 and self.varCB3.get() == 0 and self.varCB1.get() == 0:
+            messagebox.showwarning("Note!", "Please select the correct answer and SAVE before proceeding!")
             return
         questionNumber += 1
         self.createTest()
