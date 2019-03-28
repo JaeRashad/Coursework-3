@@ -1,13 +1,14 @@
 from tkinter import *
 from tkinter import messagebox
 from tkinter import simpledialog
-
+import TakeTest, Feedback, CreateTest, login, Test
 import csv
-import login
 import os
-#import CreateTest
+import shelve
+
 #Note for later self: check if a test name with the same name exists when creating a test. Maybe also add a timer so it gets deleted automatically
 test_list = []
+
 
 class Welcome(Frame):
 # GUI Setup
@@ -85,6 +86,8 @@ class Welcome(Frame):
         else:
             butTake = Button(self, text='Take TEST!',font=('MS', 8,'bold'), command = self.takeTest)#rename me to thing depending on whether or not you are a teacher
             butTake.grid(row=8, column=0, columnspan=2)
+            butResult = Button(self, text='View Result',font=('MS', 8,'bold'), command = self.getResult)
+            butResult.grid(row=8, column=3, columnspan=2)
 
     def checkTest(self):
         """ This function appends the tests available for a give 
@@ -113,7 +116,7 @@ class Welcome(Frame):
         if self.listTest.curselection() != ():
             t1 = Toplevel()
             t1.title("Test")
-            import CreateTest
+
             index = self.listTest.curselection()[0]
             testfile = str(self.listTest.get(index))
             # Try - Except can be used if neccessary
@@ -128,7 +131,7 @@ class Welcome(Frame):
         if self.listTest.curselection() != ():
             t1 = Toplevel()
             t1.title("Test")
-            import CreateTest
+            
             CreateTest.Create_Test(t1, testfile+'.csv')
     def createTest(self):
         """ This method creates an empty test csv file with a filename specified by the user in a 
@@ -144,7 +147,7 @@ class Welcome(Frame):
             #if testname == None or contains forbidden characters 
             if not testName or len([i for i in testName if i in ['/', '\\', '?', '%', '*', ':', '|', '"', '<', '>', '.']]) != 0:
                 messagebox.showinfo("Error", "You didn't enter a name or you \nused a forbidden character!")
-                return
+                
             testType = simpledialog.askstring("Input", "Formative Test: F, Summative Test: S")
             if testType and testType.upper() == 'S':
                 testDuration = simpledialog.askinteger("Input", "Enter the test duration time in minutes.\n (Min: 15, Max: 120)")
@@ -162,7 +165,7 @@ class Welcome(Frame):
                 return
             # check if the file already exists in the folder or if testName for the selected module is already in tests_overview
             if os.path.isfile('.\\{}.csv'.format(testName)) == False and testName not in test_list:
-                import Test
+                
                 #t1 = Toplevel()
                 #t1.title("Test")
                 
@@ -175,58 +178,64 @@ class Welcome(Frame):
                 #print(test_list)
             elif testName:
                 messagebox.showwarning("ERROR", "Test with that name already exists!")
-                return
+                
             else:
                 messagebox.showwarning("ERROR", "Something went wrong?!")
-                return
+                
         else:
             messagebox.showwarning("ERROR", "Please select a module!")
-            return
-
-    def takeTest(self):
-        index = self.listTest.curselection()[0]
-        testName= str(self.listTest.get(index))
-        print("Taking Test:", testName)
-        import shelve
-        #> open the database situated in the test_results folder.
-        #> 
-        #> Retrieve test duration
-        timeLimit = [i[1] for i in test_list if i[0] == testName]
-        attemptsAllowed = [i[2] for i in test_list if i[0] == testName]
-        testType = [i[3] for i in test_list if i[0] == testName]
-        testType = str(testType[0]) #> convert it to a string
-        print("attemptsAllowed =",attemptsAllowed[0])
-        print("testType =",testType)
-        db = shelve.open("test_results/"+testName+"_results")
-        #check if students ID exists in database, if it returns True then do not allow student to take test if test (if test is summative)
-        try:
-            if testType == 'S':
-                db[login.username]
-                messagebox.showinfo("Can't take test!", "You have already sat this test")
-                db.close()
-
-            elif testType == 'F':
-                db[login.username]
-                attempts = db.get(str(login.username)).toString()[1]
-                print("You have made {} so far".format(attempts)) 
-                if attempts == 3:
-                    messagebox.showinfo("Can't take test!", "You have already used your final attempt")
-                    db.close()
-                else:
-                    import TakeTest
-                    t1 = Toplevel()
-                    t1.geometry("600x500")
-                    app = TakeTest.Take_Test(t1, testName, timeLimit, login.username, attempts)  
-                    
-        except KeyError: # if database for test doesn't contain student's userID, it will return KeyError
-            db.close()
-            import TakeTest
-            t1 = Toplevel()
-            t1.geometry("600x500")
-            app = TakeTest.Take_Test(t1, testName, timeLimit, login.username)
             
 
+    def takeTest(self):
+        if self.listTest.curselection() != ():
+            index = self.listTest.curselection()[0]
+            testName= str(self.listTest.get(index))
+            print("Taking Test:", testName)
+            
+            #> open the database situated in the test_results folder.
+            #> 
+            #> Retrieve test duration
+            timeLimit = [i[1] for i in test_list if i[0] == testName]
+            attemptsAllowed = [i[2] for i in test_list if i[0] == testName]
+            testType = [i[3] for i in test_list if i[0] == testName]
+            testType = str(testType[0]) #> convert it to a string
+            print("attemptsAllowed =",attemptsAllowed[0])
+            print("testType =",testType)
+            db = shelve.open("test_results/"+testName+"_results")
+            #check if students ID exists in database, if it returns True then do not allow student to take test if test (if test is summative)
+            try:
+                if testType == 'S':
+                    db[login.username]
+                    messagebox.showinfo("Can't take summative test!", "You have already sat this test")
+                    db.close()
 
+                elif testType == 'F':
+                    db[login.username]
+                    attempts = db.get(str(login.username)).toString()[1]
+                    print("You have made {} attempts so far".format(attempts)) 
+                    if attempts == 3:
+                        messagebox.showinfo("Can't take formative test!", "You have already used your final attempt")
+                        db.close()
+                    else:
+                        db.close()
+                        t1 = Toplevel()
+                        t1.geometry("700x300")
+                        app = TakeTest.Take_Test(t1, testName, timeLimit, login.username, attempts)  
+                        
+            except KeyError: # if database for test doesn't contain student's userID, it will return KeyError
+                db.close()
+                t1 = Toplevel()
+                t1.geometry("700x300")
+                app = TakeTest.Take_Test(t1, testName, timeLimit, login.username)
+        else:
+            messagebox.showwarning("ERROR", "Please select a test to take!")
+
+    def getResult(self):
+        if self.listTest.curselection() != ():
+            index = self.listTest.curselection()[0]
+            testname = str(self.listTest.get(index))
+            t1 = Toplevel()
+            fdbck = Feedback.Show_Results(t1, login.username, testname)
 
 #mainloop
 if login.username != "":

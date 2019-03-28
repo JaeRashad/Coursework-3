@@ -37,7 +37,7 @@ class LogIn(Frame):
     def Login(self):
         failed = 1
         global username
-        username = self.entUsername.get()
+        username = self.entUsername.get().strip()
         #user String method .upper() if usernames are stored with a capital 'C'
         #print(userID)
         password = self.entPassword.get()

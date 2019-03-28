@@ -8,7 +8,6 @@ question_nr = 0
 #time = 360000
 #student = 'c1728016'
 
-
 class Take_Test(Frame):
 	""" 	TAKE SUMMATIVE OR FORMATIVE TEST
 	"""
@@ -49,39 +48,41 @@ class Take_Test(Frame):
 		self.grid()
 		global questLbl, answ1, answ2, answ3, answ4
 		questLbl = Label(self, text="Question {}: {}".format(1, questionList[0][0]), font = ('Times', 14, 'bold'))
-		questLbl.grid(row=0, column=2, pady=5, columnspan = 8)
+		questLbl.grid(row=0, column = 5, pady=5, columnspan = 25) # 7 kind of works
 		answ1 = Label(self, text="{}".format(questionList[0][1]), font = ('MS', 10,'normal'))
-		answ1.grid(row = 2, column = 2, pady = 4, columnspan = 6)
+		answ1.grid(row = 2, column = 6, pady = 4, columnspan = 1, sticky=W)
 		answ2 = Label(self, text="{}".format(questionList[0][2]), font = ('MS', 10,'normal'))
-		answ2.grid(row = 4, column = 2, pady = 4, columnspan = 6)
+		answ2.grid(row = 4, column = 6, pady = 4, columnspan = 1, sticky=W)
 		answ3 = Label(self, text="{}".format(questionList[0][3]), font = ('MS', 10,'normal'))
-		answ3.grid(row = 6, column = 2, pady = 4, columnspan = 6)
+		answ3.grid(row = 6, column = 6, pady = 4, columnspan = 1, sticky=W)
 		answ4 = Label(self, text="{}".format(questionList[0][4]), font = ('MS', 10,'normal'))
-		answ4.grid(row = 8, column = 2, pady =4 , columnspan = 6)
+		answ4.grid(row = 8, column = 6, pady =4 , columnspan = 1, sticky=W)
 		self.varCB1 = IntVar()
 		CB1 = Checkbutton(self, text="", variable=self.varCB1)
-		CB1.grid(row=2, column=8, columnspan=1, sticky=E)
+		CB1.grid(row=2, column=4, columnspan=1, sticky=W)
 		self.varCB2 = IntVar()
 		CB2 = Checkbutton(self, text="", variable=self.varCB2)
-		CB2.grid(row=4, column=8, columnspan=1, sticky=E)
+		CB2.grid(row=4, column=4, columnspan=1, sticky=W)
 		self.varCB3 = IntVar()
 		CB3 = Checkbutton(self, text="", variable=self.varCB3)
-		CB3.grid(row=6, column=8, columnspan=1, sticky=E)
+		CB3.grid(row=6, column=4, columnspan=1, sticky=W)
 		self.varCB4 = IntVar()
 		CB4 = Checkbutton(self, text="", variable=self.varCB4)
-		CB4.grid(row=8, column=8, columnspan=1, sticky=E)
+		CB4.grid(row=8, column=4, columnspan=1, sticky=W)
+
+		#!!!!######## THIS BUTTON PLACEMENT IS AN IMPROVEMENT #########!!!!
 
 	def buttonPlace(self): #button functionality and placement
-		nextButton = Button(self, text="Next", command=self.client_next)
-		nextButton.grid(column = 4,row = 10,sticky=E)
 		quitButton = Button(self, text="Quit", command=self.client_exit)
-		quitButton.grid(column=0,row=10, sticky=E)
-		backButton = Button(self, text="Back", command=self.client_back)
-		backButton.grid(column=3,row=10, sticky=E)
-		saveButton = Button(self, text="Save Answer", command=self.on_save)
-		saveButton.grid(column=2,row=10, sticky=E)
+		quitButton.grid(column=0,row=11, sticky=SE, pady=2,columnspan= 1)
 		submitButton = Button(self, text = "Submit Answers", command=self.submit)
-		submitButton.grid(column=12, row=14, sticky=SE, pady=2, columnspan= 2) 
+		submitButton.grid(column=1, row=11, sticky=SE, pady=2, columnspan= 1) 
+		nextButton = Button(self, text="\tNext", command=self.client_next)
+		nextButton.grid(column = 1,row = 10,sticky=SE, columnspan= 1)
+		backButton = Button(self, text="Back", command=self.client_back)
+		backButton.grid(column=0,row=10, sticky=SE, columnspan= 1)
+		saveButton = Button(self, text="Save Answer", command=self.on_save)
+		saveButton.grid(column=3,row=10, sticky=SE, columnspan= 1)
 
 	def actualSubmit(self):
 		from Result import result 
@@ -117,7 +118,6 @@ class Take_Test(Frame):
 		answ2["text"] = "{}".format(questionList[questionNo][2])
 		answ3["text"] = "{}".format(questionList[questionNo][3])
 		answ4["text"] = "{}".format(questionList[questionNo][4])
-
 		
 	def client_next(self):
 		global question_nr
@@ -148,15 +148,7 @@ class Take_Test(Frame):
 	
 	def on_save(self):
 		global question_nr, answers
-		#print(questionList[question_nr][0])
-		#print(answers)
-		# if answer for a question already exist, replace them
-		#try:
 		answers[question_nr] = (self.varCB1.get(), self.varCB2.get(), self.varCB3.get(), self.varCB4.get())
-		# else append them
-		#except IndexError:	
-		#	__answers.append((self.varCB1.get(), self.varCB2.get(), self.varCB3.get(), self.varCB4.get()))
-
 		print(answers)
 
 	def get_questions(self):
