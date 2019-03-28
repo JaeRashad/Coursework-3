@@ -1,6 +1,8 @@
 from tkinter import *
 from tkinter import messagebox
 from tkinter import simpledialog
+from dateutil import parser
+import datetime
 import TakeTest, Feedback, CreateTest, login, Test
 import csv
 import os
@@ -149,7 +151,24 @@ class Welcome(Frame):
                 messagebox.showinfo("Error", "You didn't enter a name or you \nused a forbidden character!")
                 
             testType = simpledialog.askstring("Input", "Formative Test: F, Summative Test: S")
+            duedate = False
             if testType and testType.upper() == 'S':
+
+                invalid_input=True
+                while(invalid_input==True):
+                    dueDate = simpledialog.askstring("Input", "Please enter the date the assesment is due in a following format 'Aug 28 1999 12:00AM'")
+                    try:
+                        duedate = parser.parse(dueDate)
+                        now = datetime.datetime.now()
+                        print((now-duedate).total_seconds())
+                        if (now-duedate).total_seconds() > 0:
+                            messagebox.showwarning("ERROR", "Please enter a date that's in the future")
+                        else:
+                            invalid_input=False
+                    except:
+                        messagebox.showwarning("ERROR", "Enter the due date in a valid format")
+
+                
                 testDuration = simpledialog.askinteger("Input", "Enter the test duration time in minutes.\n (Min: 15, Max: 120)")
                 if testDuration < 15:
                     #> change testDuration to 15 
@@ -163,6 +182,10 @@ class Welcome(Frame):
             else:
                 messagebox.showwarning("ERROR", "Enter F or S!")
                 return
+
+
+
+            
             # check if the file already exists in the folder or if testName for the selected module is already in tests_overview
             if os.path.isfile('.\\{}.csv'.format(testName)) == False and testName not in test_list:
                 
@@ -170,9 +193,12 @@ class Welcome(Frame):
                 #t1.title("Test")
                 
                 Test.test_file(testName, testType.upper(), strModule, name, testDuration)
-                
+                if duedate == False:
+                    Test.test_file(testName, testType.upper(), strModule, name, testDuration)
+                else:
+                    Test.test_file(testName, testType.upper(), strModule, name, testDuration, duedate)
                 print('...Test Created...\n'+120*'-'+'\nTest Name: {0:30}|Type: {1:10}|Teacher: {2:25}|Duration: {3:9}\n'.format(testName, 'Formative' if testType.upper() == 'F' else 'Summative', 
-                    name, 'No time limit' if testType.upper() == 'F' else str(testDuration) + ' minutes'))
+                    name, 'No time limit' if testType.upper() == 'F' else str(testDuration) + ' minutes' + str(duedate)))
                 self.checkTest()
                 self.editTestFast(testName)
                 #print(test_list)
