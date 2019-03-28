@@ -1,5 +1,5 @@
 module,test name,test type,teacher,time limit in minutes,attempts allowed
-CM1101,Binary,F,Tim,No,3
+CM1101,Binary,S,Tim,No,3,2020-08-20 00:00:00
 CM1101,Java,F,Tim,No,3
 CM1101,TestingTest_list,S,Tim,1,1
 CM1101,TestNew,S,Tim,16,1
@@ -13,5 +13,4 @@ CM1101,testtt,S,Damjan,20,1
 CM1103,agfdeadsfg,S,Damjan,20,1
 CM1103,asudfopoudsgf,S,Damjan,20,1
 CM1103,thisisatest,S,Damjan,20,1
-CM1103,afsdafasd,S,Damjan,20,1
-CM1103,afsdafasd,S,Damjan,20,1,2020-08-20 00:00:00
+CM1103,afsdafasd,S,Damjan,20,1,2018-08-20 00:00:00
