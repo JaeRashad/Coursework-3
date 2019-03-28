@@ -207,7 +207,7 @@ class Create_Test(Frame):
         if self.Answer4.get("1.0", "end-1c") == "INPUT FIRST CHOICE HERE" or self.Answer4.get("1.0", "end-1c") == "":
             messagebox.showwarning("Note!", "Please fill out the answers before proceeding!")
             return
-        if self.varCB1.get() == 0 and self.varCB2.get() == 0 and self.varCB3.get() == 0 and self.varCB1.get() == 0:
+        if self.varCB1.get() == 0 and self.varCB2.get() == 0 and self.varCB3.get() == 0 and self.varCB4.get() == 0:
             messagebox.showwarning("Note!", "Please select the correct answer and SAVE before proceeding!")
             return
         questionNumber += 1
