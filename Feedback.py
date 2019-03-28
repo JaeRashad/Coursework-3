@@ -2,29 +2,33 @@
 import shelve
 import csv
 from tkinter import *
-global answersInStringForm, questionList, userAnswers, correctAnswers, score
+global answersInStringForm, questionList, userAnswers, correctAnswers, score, attempt
+import datetime
+from dateutil import parser
 
 correctAnswers = []
 score = 0
 questionList = []
 answersInStringForm = []
 userAnswers = []
-
+attempt = int()
 
 class Show_Results(Frame):
 	""" Displays results without showing answers, for formative tests when it's not the final attempt """
-	def __init__(self, master, ID, testname):
+	def __init__(self, master, ID, testname, testType, deadline = 0):
 		Frame.__init__(self, master)
-
+		self.testType = testType
 		self.student = ID
 		self.testname = testname
 		self.master.title("Results")
-		
+		self.deadline = deadline
 		self.get_questions()
 		try:
+			print("Here")
 			self.getUserAnswers()
 			self.labels()
 		except AttributeError:
+
 			messagebox.showwarning("Error", "You've not taken this test.")
 			self.master.destroy()
 	def labels(self):
@@ -38,56 +42,77 @@ class Show_Results(Frame):
 
 		lbl3 = Label(self, text="Score: {} / {} ".format(str(score), len(questionList)), font = ('Times', 16, 'italic'))
 		lbl3.grid(row=0, column = 2, columnspan= 14, sticky=W)
-		"""
-		lbl4 = Label(self, text="Your Answer", font = ('Times', 15, 'italic'))
-		lbl4.grid(row=2, column = 18)
-		lbl3 = Label(self, text="Correct Answer", font = ('Times', 15, 'italic'))
-		lbl3.grid(row=2, column = 9)
-		q1 = Label(self, text="{}. {}.".format(1, questionList[0][0]), font = ('Times', 14, 'normal'))
-		q1.grid(row=3, column=0)
-		A1 = Label(text="{} /{}/{}/{}".format(questionList[0][1][0], questionList[0][1][1] if len(questionList[0][1]) >= 2 else "", 
-				questionList[0][1][2] if len(questionList[0][1]) >= 3 else "", 
-				questionList[0][1][3] if len(questionList[0][1]) >= 4 else ""), font = ('Times', 14,'italic'))
-		A1.grid(row = 3, column = 9, sticky=W)
-		"""
-		row = 3
+		
 		photo1 = PhotoImage(file="good_mark.gif")	
 		photo2 = PhotoImage(file="bad_mark.gif")
-		for i in range(len(questionList)):
-			#> this needs to be changed somehow...
+		row = 3
 
-			Q = Label(self, text="{}. {}-----Your Answer(s): {}\t{}\t{}\t{}".format(i+1, questionList[i][0],userAnswers[i][0], userAnswers[i][1] if len(userAnswers[i]) == 2 else "", 
-				userAnswers[i][2] if len(userAnswers[i]) == 3 else "", 
-				userAnswers[i][3] if len(userAnswers[i]) == 4 else ""), font = ('Times', 14, 'normal'))
-			Q.grid(row=row, column = 0, sticky=NW, columnspan=15, pady = 2)
-			#> Simple working answer verification for now, probably needs to be changed!!!!!
-			if questionList[i][1] == userAnswers[i]:
-				print(questionList[i][1],"-",userAnswers[i])
-				tick = Label(self, image=photo1)
-				tick.grid(row = row, column = 16)
-				tick.photo = photo1	
-			else:
-				tick = Label(self, image = photo2)
-				tick.grid(row = row, column = 16)
-				tick.photo = photo2	
-			row+=2
-		"""
-		row = 2
-		for i in range(len(questionList)-1):
-			Q = Label(self, text="{}. {}.    Ans: {} {} {} {}".format(i+1, questionList[i][0],questionList[i][1][0], questionList[i][1][1] if len(questionList[i][1]) == 2 else "", 
-				questionList[i][1][2] if len(questionList[i][1]) == 3 else "", 
-				questionList[i][1][3] if len(questionList[i][1]) == 4 else ""), font = ('Times', 14, 'italic'))
-			Q.grid(row=row, column = 0, sticky=W, columnspan=10)
-			row+=1
-		"""
+		datetimeNow =  datetime.datetime.now()
+
+		#print("attempt:", attempt)
+		#print("testType:", self.testType)
+		#> This code formats the display of the results depending on the conditions below
+		if (self.testType == 'F' and attempt < 3) or (self.testType == 'S' and datetimeNow < self.deadline):
+			print("IM HERE 1")
+			for i in range(len(questionList)):
+
+				lbl4 = Label(self, text="Your Answer(s)", font = ('Times', 15, 'italic'))
+				lbl4.grid(row=2, column = 18)				
+				Q = Label(self, text="{}. {}".format(i+1, questionList[i][0]), font = ('Times', 14, 'normal'))
+				Q.grid(row=row, column = 0, sticky=NW, pady = 2)
+				yourAnswer = Label(self, text="{}    {}    {}    {}".format(userAnswers[i][0], userAnswers[i][1] if len(userAnswers[i]) == 2 else "", 
+					userAnswers[i][2] if len(userAnswers[i]) == 3 else "", userAnswers[i][3] if len(userAnswers[i]) == 4 else ""), font = ('Times', 14, 'normal'))
+				yourAnswer.grid(row=row, column=18, sticky = W)
+				
+				#> Simple working answer verification for now, probably needs to be changed!!!!!
+				if questionList[i][1] == userAnswers[i]:
+					print(questionList[i][1],"-",userAnswers[i])
+					tick = Label(self, image=photo1)
+					tick.grid(row = row, column = 19)
+					tick.photo = photo1	
+				else:
+					tick = Label(self, image = photo2)
+					tick.grid(row = row, column = 19)
+					tick.photo = photo2
+				row+=2
+		else:
+
+			lbl3 = Label(self, text="Correct Answer(s)", font = ('Times', 15, 'italic'))
+			lbl3.grid(row=2, column = 9)
+			lbl4 = Label(self, text="Your Answer(s)", font = ('Times', 15, 'italic'))
+			lbl4.grid(row=2, column = 18)
+			for i in range(len(questionList)):
+				
+				q1 = Label(self, text="{}. {}.".format(i+1, questionList[i][0]), font = ('Times', 14, 'normal'))
+				q1.grid(row=row, column=0, sticky=W)
+				correctAnswer = Label(self, text="A1: {}   A2: {}   A3: {}".format(questionList[i][1][0], questionList[i][1][1] if len(questionList[i][1]) >= 2 else "", questionList[i][1][2] if len(questionList[i][1]) >= 3 else ""), font = ('Times', 12, 'bold'))
+				correctAnswer.grid(row = row, column = 9, sticky=W)
+				yourAnswer = Label(self, text="{}    {}    {}    {}".format(userAnswers[i][0], userAnswers[i][1] if len(userAnswers[i]) == 2 else "", 
+					userAnswers[i][2] if len(userAnswers[i]) == 3 else "", userAnswers[i][3] if len(userAnswers[i]) == 4 else ""), font = ('Times', 14, 'normal'))
+				yourAnswer.grid(row=row, column=18, sticky = W)
+
+				if questionList[i][1] == userAnswers[i]:
+					print(questionList[i][1],"-",userAnswers[i])
+					tick = Label(self, image=photo1)
+					tick.grid(row = row, column = 19)
+					tick.photo = photo1	
+				else:
+					tick = Label(self, image = photo2)
+					tick.grid(row = row, column = 19)
+					tick.photo = photo2				
+				row += 2				
+
 	def getUserAnswers(self):
 		print("doing getUserAnswers")
-		global answersInStringForm, userAnswers
+		global answersInStringForm, userAnswers, attempt
 		userAnswers = []
+		attempt = 0
 		#answersInStringForm = []
 		
 		data = shelve.open("test_results/" + self.testname + "_results")
 		result = data.get(self.student).toString()[2]
+		attempt = data.get(self.student).toString()[1]
+
 		for i, answer in enumerate(result):
 			temp = []
 			for j, val in enumerate(answer):
@@ -97,6 +122,7 @@ class Show_Results(Frame):
 			userAnswers.append(tuple(temp))
 		data.close()
 		return userAnswers
+
 	 #> if user hasn't taken a test and tries to view the results it will return error
 			#messagebox.showwarning("Error!", "You have not taken this test!")
 			#print("something broke dawg")
@@ -114,6 +140,7 @@ class Show_Results(Frame):
 		self.result = []
 		self.result = shelve.open("test_results/" + self.testname + "_results").get(self.student).toString()
 		#result = data.get(self.student).toString()
+		
 		with open(self.testname+".csv") as testfile:
 			rdr = csv.reader(testfile)
 			for row in rdr:
@@ -121,11 +148,13 @@ class Show_Results(Frame):
 
 		for i, answer in enumerate(correctAnswers):
 			#print(answer)
-
 			if self.result[2][i] == answer:
 				score += 1
-			print()
+			#print()
 		#data.close()
+		#print("correctAnswers: ", correctAnswers)
+		#shelve.close("test_results/" + self.testname + "_results")
+
 		return score
 
 	def get_questions(self):
@@ -138,7 +167,7 @@ class Show_Results(Frame):
 			csv_reader = csv.reader(csv_file,delimiter=",")
 			line_count = 0
 			for row in csv_reader:
-				print(row)
+				#print(row)
 				answersInStringForm.append((row[1], row[2], row[3], row[4]))
 				tempAnsList = []
 				for i in range(5,9):
@@ -148,14 +177,8 @@ class Show_Results(Frame):
 				questionList.append([row[0], tuple(tempAnsList)])
 
 		#print(questionList)
-		print("Asnwers in string form",answersInStringForm)
-		print("questionList: ", questionList)
+		#print("Asnwers in string form",answersInStringForm)
+		#print("questionList: ", questionList)
 		return questionList	
-
-"""
-root = Tk()
-a = Show_Results(root, "c1800857","Binary")
-root.mainloop()
-"""
 
 
