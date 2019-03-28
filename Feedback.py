@@ -2,8 +2,8 @@
 import shelve
 import csv
 from tkinter import *
-
 global answersInStringForm, questionList, userAnswers, correctAnswers, score
+
 correctAnswers = []
 score = 0
 questionList = []
@@ -21,9 +21,12 @@ class Show_Results(Frame):
 		self.master.title("Results")
 		
 		self.get_questions()
-		self.getUserAnswers()
-		self.labels()
-
+		try:
+			self.getUserAnswers()
+			self.labels()
+		except AttributeError:
+			messagebox.showwarning("Error", "You've not taken this test.")
+			self.master.destroy()
 	def labels(self):
 
 		self.grid()
@@ -105,6 +108,7 @@ class Show_Results(Frame):
 
 	def getValues(self):
 		global score, correctAnswers
+		score = 0
 		correctAnswers = []
 		self.result = []
 		self.result = shelve.open("test_results/" + self.testname + "_results").get(self.student).toString()
@@ -116,16 +120,9 @@ class Show_Results(Frame):
 
 		for i, answer in enumerate(correctAnswers):
 			print(answer)
-			if answer.count(1) == 3:
-				if self.result[2][i] == answer:
-					score+=3
-			elif answer.count(1) == 2:
-		
-				if self.result[2][i] == answer:
-					score+=2
-			else:
-				if self.result[2][i] == answer:
-					score += 1
+
+			if self.result[2][i] == answer:
+				score += 1
 			print()
 		#data.close()
 		return score
