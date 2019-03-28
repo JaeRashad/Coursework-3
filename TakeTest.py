@@ -40,7 +40,7 @@ class Take_Test(Frame):
 			self.master.after(duration, self.timeUp)
 	
 	def timeUp(self):
-		messagebox.showwarning("Time's up", "BITCH YOU RAN OUT OF TIME")
+		messagebox.showwarning("Time's up", "You ran out of time!")
 		self.submit(True)
 
 	def initWindow(self):

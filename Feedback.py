@@ -36,7 +36,7 @@ class Show_Results(Frame):
 		lbl2.grid(row=0, column = 1, sticky=W)
 		score = self.getValues()
 
-		lbl3 = Label(self, text="Score: {} / {} ".format(str(score), "figure out how to calc max test score"), font = ('Times', 16, 'italic'))
+		lbl3 = Label(self, text="Score: {} / {} ".format(str(score), len(questionList)), font = ('Times', 16, 'italic'))
 		lbl3.grid(row=0, column = 2, columnspan= 14, sticky=W)
 		"""
 		lbl4 = Label(self, text="Your Answer", font = ('Times', 15, 'italic'))
@@ -81,7 +81,7 @@ class Show_Results(Frame):
 			row+=1
 		"""
 	def getUserAnswers(self):
-		print(self.testname)
+		print("doing getUserAnswers")
 		global answersInStringForm, userAnswers
 		userAnswers = []
 		#answersInStringForm = []
@@ -104,9 +104,10 @@ class Show_Results(Frame):
 
 		#print(result)
 		#print(type(result[0][0]))
-		print(userAnswers)
+		#print(userAnswers)
 
 	def getValues(self):
+		print("Doing getValues")
 		global score, correctAnswers
 		score = 0
 		correctAnswers = []
@@ -119,7 +120,7 @@ class Show_Results(Frame):
 				correctAnswers.append((int(row[5]),int(row[6]),int(row[7]),int(row[8])))
 
 		for i, answer in enumerate(correctAnswers):
-			print(answer)
+			#print(answer)
 
 			if self.result[2][i] == answer:
 				score += 1
