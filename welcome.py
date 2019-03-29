@@ -130,6 +130,7 @@ class Welcome(Frame):
             testfile = str(self.listTest.get(index))
             # Try - Except can be used if neccessary
             #try:
+            CreateTest.create_file = 1
             CreateTest.Create_Test(t1, testfile+'.csv')
             #except FileNotFoundError:
             #    messagebox.showwarning("ERROR", "Test only exists in tests_overview.csv")
