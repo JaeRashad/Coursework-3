@@ -14,7 +14,7 @@ class test_file:
 			self.attemptsAllowed = 1
 		with open("tests_overview.csv", mode = 'a') as csvfile:
                         if duedate == False:
-                                csvfile.write('{},{},{},{},{},{}\n'.format(module, testName, testType, teacherName, timeLimit, self.attemptsAllowed))
+                                csvfile.write('{},{},{},{},{},{},{}\n'.format(module, testName, testType, teacherName, timeLimit, self.attemptsAllowed, "No"))
                         else:
                                 csvfile.write('{},{},{},{},{},{},{}\n'.format(module, testName, testType, teacherName, timeLimit, self.attemptsAllowed, duedate))
 

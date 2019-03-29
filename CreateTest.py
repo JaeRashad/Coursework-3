@@ -171,23 +171,23 @@ class Create_Test(Frame):
         global questionNumber
         r = csv.reader(open(self.filename, 'r'))
         old = list(r)
-        if self.Question.get("1.0", "end-1c") == "INPUT QUESTION HERE" or self.Question.get("1.0", "end-1c") == "":
+        if self.Question.get("1.0", "end-1c").replace(",","").replace("\n"," ") == "INPUT QUESTION HERE" or self.Question.get("1.0", "end-1c").replace(",","").replace("\n"," ") == "":
             messagebox.showwarning("Note!", "Please fill out the question before proceeding!")
             return
         try:
-            if old[questionNumber-1][0] != self.Question.get("1.0", "end-1c"):
+            if old[questionNumber-1][0] != self.Question.get("1.0", "end-1c").replace(",","").replace("\n"," "):
                 messagebox.showwarning("Note!", "You have made a change to question number: " + str(questionNumber) + "\n Please save your changes before you continue")
                 return
-            if old[questionNumber-1][1] != self.Answer1.get("1.0", "end-1c"):
+            if old[questionNumber-1][1] != self.Answer1.get("1.0", "end-1c").replace(",","").replace("\n"," "):
                 messagebox.showwarning("Note!", "You have made a change to question number: " + str(questionNumber) + "\n Please save your changes before you continue")
                 return
-            if old[questionNumber-1][2] != self.Answer2.get("1.0", "end-1c"):
+            if old[questionNumber-1][2] != self.Answer2.get("1.0", "end-1c").replace(",","").replace("\n"," "):
                 messagebox.showwarning("Note!", "You have made a change to question number: " + str(questionNumber) + "\n Please save your changes before you continue")
                 return
-            if old[questionNumber-1][3] != self.Answer3.get("1.0", "end-1c"):
+            if old[questionNumber-1][3] != self.Answer3.get("1.0", "end-1c").replace(",","").replace("\n"," "):
                 messagebox.showwarning("Note!", "You have made a change to question number: " + str(questionNumber) + "\n Please save your changes before you continue")
                 return
-            if old[questionNumber-1][4] != self.Answer4.get("1.0", "end-1c"):
+            if old[questionNumber-1][4] != self.Answer4.get("1.0", "end-1c").replace(",","").replace("\n"," "):
                 messagebox.showwarning("Note!", "You have made a change to question number: " + str(questionNumber) + "\n Please save your changes before you continue")
                 return
 
@@ -195,16 +195,16 @@ class Create_Test(Frame):
             messagebox.showwarning("Note!", "Please save the question before proceeding!")
             return
 
-        if self.Answer1.get("1.0", "end-1c") == "INPUT FIRST CHOICE HERE" or self.Answer1.get("1.0", "end-1c") == "":
+        if self.Answer1.get("1.0", "end-1c").replace(",","").replace("\n"," ") == "INPUT FIRST CHOICE HERE" or self.Answer1.get("1.0", "end-1c").replace(",","").replace("\n"," ") == "":
             messagebox.showwarning("Note!", "Please fill out the answers before proceeding!")
             return
-        if self.Answer2.get("1.0", "end-1c") == "INPUT FIRST CHOICE HERE" or self.Answer2.get("1.0", "end-1c") == "":
+        if self.Answer2.get("1.0", "end-1c").replace(",","").replace("\n"," ") == "INPUT FIRST CHOICE HERE" or self.Answer2.get("1.0", "end-1c").replace(",","").replace("\n"," ") == "":
             messagebox.showwarning("Note!", "Please fill out the answers before proceeding!")
             return
-        if self.Answer3.get("1.0", "end-1c") == "INPUT FIRST CHOICE HERE" or self.Answer3.get("1.0", "end-1c") == "":
+        if self.Answer3.get("1.0", "end-1c").replace(",","").replace("\n"," ") == "INPUT FIRST CHOICE HERE" or self.Answer3.get("1.0", "end-1c").replace(",","").replace("\n"," ") == "":
             messagebox.showwarning("Note!", "Please fill out the answers before proceeding!")
             return
-        if self.Answer4.get("1.0", "end-1c") == "INPUT FIRST CHOICE HERE" or self.Answer4.get("1.0", "end-1c") == "":
+        if self.Answer4.get("1.0", "end-1c").replace(",","").replace("\n"," ") == "INPUT FIRST CHOICE HERE" or self.Answer4.get("1.0", "end-1c").replace(",","").replace("\n"," ") == "":
             messagebox.showwarning("Note!", "Please fill out the answers before proceeding!")
             return
         if self.varCB1.get() == 0 and self.varCB2.get() == 0 and self.varCB3.get() == 0 and self.varCB4.get() == 0:
@@ -229,22 +229,22 @@ class Create_Test(Frame):
             old = list(r)
             if questionNumber > len(old):
                 with open(self.filename, mode='a') as csv_file:
-                    csv_file.write(self.Question.get("1.0", "end-1c")+",")
-                    csv_file.write(self.Answer1.get("1.0","end-1c")+",")
-                    csv_file.write(self.Answer2.get("1.0","end-1c")+",")
-                    csv_file.write(self.Answer3.get("1.0","end-1c")+",")
-                    csv_file.write(self.Answer4.get("1.0","end-1c")+",")
+                    csv_file.write(self.Question.get("1.0", "end-1c").replace(",","").replace("\n"," ")+",")
+                    csv_file.write(self.Answer1.get("1.0","end-1c").replace(",","").replace("\n"," ")+",")
+                    csv_file.write(self.Answer2.get("1.0","end-1c").replace(",","").replace("\n"," ")+",")
+                    csv_file.write(self.Answer3.get("1.0","end-1c").replace(",","").replace("\n"," ")+",")
+                    csv_file.write(self.Answer4.get("1.0","end-1c").replace(",","").replace("\n"," ")+",")
                     csv_file.write(str(self.varCB1.get())+",")
                     csv_file.write(str(self.varCB2.get())+",")
                     csv_file.write(str(self.varCB3.get())+",")
                     csv_file.write(str(self.varCB4.get())+"\n")
                 saved_questions.append(questionNumber)
             else:
-                old[questionNumber-1][0] = (self.Question.get("1.0", "end-1c"))
-                old[questionNumber-1][1] = (self.Answer1.get("1.0", "end-1c"))
-                old[questionNumber-1][2] = (self.Answer2.get("1.0", "end-1c"))
-                old[questionNumber-1][3] = (self.Answer3.get("1.0", "end-1c"))
-                old[questionNumber-1][4] = (self.Answer4.get("1.0", "end-1c"))
+                old[questionNumber-1][0] = (self.Question.get("1.0", "end-1c").replace(",","").replace("\n"," "))
+                old[questionNumber-1][1] = (self.Answer1.get("1.0", "end-1c").replace(",","").replace("\n"," "))
+                old[questionNumber-1][2] = (self.Answer2.get("1.0", "end-1c").replace(",","").replace("\n"," "))
+                old[questionNumber-1][3] = (self.Answer3.get("1.0", "end-1c").replace(",","").replace("\n"," "))
+                old[questionNumber-1][4] = (self.Answer4.get("1.0", "end-1c").replace(",","").replace("\n"," "))
                 old[questionNumber-1][5] = (str(self.varCB1.get()))
                 old[questionNumber-1][6] = (str(self.varCB2.get()))
                 old[questionNumber-1][7] = (str(self.varCB3.get()))
@@ -261,11 +261,11 @@ class Create_Test(Frame):
                         writer.write("\n")
         else:
             with open(self.filename, mode='a') as csv_file:
-                csv_file.write(self.Question.get("1.0", "end-1c")+",")
-                csv_file.write(self.Answer1.get("1.0","end-1c")+",")
-                csv_file.write(self.Answer2.get("1.0","end-1c")+",")
-                csv_file.write(self.Answer3.get("1.0","end-1c")+",")
-                csv_file.write(self.Answer4.get("1.0","end-1c")+",")
+                csv_file.write(self.Question.get("1.0", "end-1c").replace(",","").replace("\n"," ")+",")
+                csv_file.write(self.Answer1.get("1.0","end-1c").replace(",","").replace("\n"," ")+",")
+                csv_file.write(self.Answer2.get("1.0","end-1c").replace(",","").replace("\n"," ")+",")
+                csv_file.write(self.Answer3.get("1.0","end-1c").replace(",","").replace("\n"," ")+",")
+                csv_file.write(self.Answer4.get("1.0","end-1c").replace(",","").replace("\n"," ")+",")
                 csv_file.write(str(self.varCB1.get())+",")
                 csv_file.write(str(self.varCB2.get())+",")
                 csv_file.write(str(self.varCB3.get())+",")
@@ -279,6 +279,8 @@ class Create_Test(Frame):
        self.Answer2.delete("1.0", END)
        self.Answer3.delete("1.0", END)
        self.Answer4.delete("1.0", END)
+
+
 
 #Main
 """
