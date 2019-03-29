@@ -71,7 +71,11 @@ class Welcome(Frame):
                         #> row[2] is TEST TYPE
                         #print("row 6:", row[6])
                         #print("row 6 type", type(row[6]))
-                    test_list.append((row[1], row[4], row[5], row[2], row[6]))
+                    print(row)
+                    if row[2] == "F":
+                        test_list.append((row[1], row[4], row[5], row[2]))
+                    else:
+                        test_list.append((row[1], row[4], row[5], row[2], row[6]))
                     #else:
                     #    print("row 6:", row[6])
                     #    test_list.append((row[1], row[4], row[5], row[2], row[6]))
