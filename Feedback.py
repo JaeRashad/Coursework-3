@@ -5,6 +5,8 @@ from tkinter import *
 global answersInStringForm, questionList, userAnswers, correctAnswers, score, attempt
 import datetime
 from dateutil import parser
+from tkinter import font
+
 
 correctAnswers = []
 score = 0
@@ -36,6 +38,10 @@ class Show_Results(Frame):
 		self.grid()
 		lbl1 = Label(self, text="Test: {}".format(self.testname.upper()), bg = '#55FF61',font = ('Times', 16, 'bold'))
 		lbl1.grid(row=0, column = 0, sticky=W)
+		f = font.Font(lbl1, lbl1.cget("font"))
+		f.configure(underline=True)
+		lbl1.configure(font=f)
+
 		lbl2 = Label(self, text="Student: {}".format(self.student.upper()), bg = '#55FF61', font = ('Times', 16, 'bold'))
 		lbl2.grid(row=0, column = 1, sticky=W)
 		score = self.getValues()
