@@ -85,7 +85,7 @@ class Show_Results(Frame):
 				
 				q1 = Label(self, text="{}. {}.".format(i+1, questionList[i][0]), font = ('Times', 14, 'normal'))
 				q1.grid(row=row, column=0, sticky=W)
-				correctAnswer = Label(self, text="A1: {}   A2: {}   A3: {}".format(questionList[i][1][0], questionList[i][1][1] if len(questionList[i][1]) >= 2 else "", questionList[i][1][2] if len(questionList[i][1]) >= 3 else ""), font = ('Times', 12, 'bold'))
+				correctAnswer = Label(self, text="{}    {}    {}".format('A1: ' + questionList[i][1][0], 'A2: ' + questionList[i][1][1] if len(questionList[i][1]) >= 2 else "", 'A3: ' + questionList[i][1][2] if len(questionList[i][1]) >= 3 else ""), font = ('Times', 12, 'bold'))
 				correctAnswer.grid(row = row, column = 9, sticky=W)
 				yourAnswer = Label(self, text="{}    {}    {}    {}".format(userAnswers[i][0], userAnswers[i][1] if len(userAnswers[i]) == 2 else "", 
 					userAnswers[i][2] if len(userAnswers[i]) == 3 else "", userAnswers[i][3] if len(userAnswers[i]) == 4 else ""), font = ('Times', 14, 'normal'))
