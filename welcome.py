@@ -7,7 +7,6 @@ import TakeTest, Feedback, CreateTest, login, Test
 import csv
 import os
 import shelve
-
 #Note for later self: check if a test name with the same name exists when creating a test. Maybe also add a timer so it gets deleted automatically
 test_list = []
 
@@ -72,7 +71,11 @@ class Welcome(Frame):
                         #> row[2] is TEST TYPE
                         #print("row 6:", row[6])
                         #print("row 6 type", type(row[6]))
-                    test_list.append((row[1], row[4], row[5], row[2], row[6]))
+                    print(row)
+                    if row[2] == "F":
+                        test_list.append((row[1], row[4], row[5], row[2]))
+                    else:
+                        test_list.append((row[1], row[4], row[5], row[2], row[6]))
                     #else:
                     #    print("row 6:", row[6])
                     #    test_list.append((row[1], row[4], row[5], row[2], row[6]))
@@ -135,6 +138,7 @@ class Welcome(Frame):
             testfile = str(self.listTest.get(index))
             # Try - Except can be used if neccessary
             #try:
+            CreateTest.create_file = 1
             CreateTest.Create_Test(t1, testfile+'.csv')
             #except FileNotFoundError:
             #    messagebox.showwarning("ERROR", "Test only exists in tests_overview.csv")
@@ -241,14 +245,25 @@ class Welcome(Frame):
             #check if students ID exists in database, if it returns True then do not allow student to take test if test (if test is summative)
             try:
                 if testType == 'S':
-                    db[login.username]
-                    messagebox.showinfo("Can't take summative test!", "You have already sat this test")
+                    """WE only have test name to work on :( so i have to check all of the test_overview file for the datetime"""
+                    with open('tests_overview.csv') as csv_file:
+                        csv_reader = csv.reader(csv_file, delimiter=',')
+                        for row in csv_reader:
+                            if row[1] == testName:
+                                dueDate = row[6]
+                    duedate = parser.parse(dueDate)
+                    now = datetime.datetime.now()
+                    if now>duedate:#current due date has passed :( therefore don't allow student to take test
+                        messagebox.showinfo("TOO LATE!!!","Sorry, the due date for this assesment has passed already")
+                    else:
+                        db[login.username]
+                        messagebox.showinfo("Can't take summative test!", "You have already sat this test")
                     db.close()
 
                 elif testType == 'F':
                     db[login.username]
                     attempts = db.get(str(login.username)).toString()[1]
-                    print("You have made {} attempts so far".format(attempts)) 
+                    print("You have made {} attempts so far".format(attempts))
                     if attempts == 3:
                         messagebox.showinfo("Can't take formative test!", "You have already used your final attempt")
                         db.close()

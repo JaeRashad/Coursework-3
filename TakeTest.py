@@ -194,8 +194,3 @@ except KeyError:
 	app = Take_Test(root, testName, 20000)
 	root.mainloop()
 """
-
-
-
-
-
