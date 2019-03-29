@@ -13,4 +13,9 @@ CM1101,testtt,S,Damjan,20,1
 CM1103,agfdeadsfg,S,Damjan,20,1
 CM1103,asudfopoudsgf,S,Damjan,20,1
 CM1103,thisisatest,S,Damjan,20,1
+<<<<<<< HEAD
 CM1103,afsdafasd,S,Damjan,20,1,2018-08-20 00:00:00
+=======
+CM1103,afsdafasd,S,Damjan,20,1
+CM1103,afsdafasd,S,Damjan,20,1,2019-03-28 14:35:00
+>>>>>>> 1f0216cee1a8b2d60fa907199bb5e778023ac18c

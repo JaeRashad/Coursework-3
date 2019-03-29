@@ -2,6 +2,7 @@ from tkinter import *
 from tkinter import messagebox
 import csv
 global questionList
+import datetime
 questionList = []
 question_nr = 0
 #labels = []
@@ -40,7 +41,7 @@ class Take_Test(Frame):
 			self.master.after(duration, self.timeUp)
 	
 	def timeUp(self):
-		messagebox.showwarning("Time's up", "BITCH YOU RAN OUT OF TIME")
+		messagebox.showwarning("Time's up", "You ran out of time!")
 		self.submit(True)
 
 	def initWindow(self):
@@ -57,6 +58,8 @@ class Take_Test(Frame):
 		answ3.grid(row = 6, column = 6, pady = 4, columnspan = 1, sticky=W)
 		answ4 = Label(self, text="{}".format(questionList[0][4]), font = ('MS', 10,'normal'))
 		answ4.grid(row = 8, column = 6, pady =4 , columnspan = 1, sticky=W)
+		clock = Label(self, text="Test ends at {}:{}".format((datetime.datetime.now() + datetime.timedelta(minutes=int(self.timelimit[0]))).hour,(datetime.datetime.now() + datetime.timedelta(minutes=int(self.timelimit[0]))).minute), font = ('Times', 14, 'italic'))
+		clock.grid(row=15, column=0, pady=5, columnspan = 8)
 		self.varCB1 = IntVar()
 		CB1 = Checkbutton(self, text="", variable=self.varCB1)
 		CB1.grid(row=2, column=4, columnspan=1, sticky=W)
