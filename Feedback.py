@@ -48,16 +48,16 @@ class Show_Results(Frame):
 		row = 3
 
 		datetimeNow =  datetime.datetime.now()
+		lblQ = Label(self, text="Questions", font = ('Times', 15, 'italic'))
+		lblQ.grid(row = 2, column = 0, sticky = W)
 
-		#print("attempt:", attempt)
-		#print("testType:", self.testType)
 		#> This code formats the display of the results depending on the conditions below
 		if (self.testType == 'F' and attempt < 3) or (self.testType == 'S' and datetimeNow < self.deadline):
-			print("IM HERE 1")
+			#print("IM HERE 1")
+			lbl4 = Label(self, text="Your Answer(s)", font = ('Times', 15, 'italic'))
+			lbl4.grid(row=2, column = 18, sticky = W)
 			for i in range(len(questionList)):
 
-				lbl4 = Label(self, text="Your Answer(s)", font = ('Times', 15, 'italic'))
-				lbl4.grid(row=2, column = 18)				
 				Q = Label(self, text="{}. {}".format(i+1, questionList[i][0]), font = ('Times', 14, 'normal'))
 				Q.grid(row=row, column = 0, sticky=NW, pady = 2)
 				yourAnswer = Label(self, text="{}    {}    {}    {}".format(userAnswers[i][0] if len(userAnswers[i]) >= 1 else "", userAnswers[i][1] if len(userAnswers[i]) >= 2 else "", 
@@ -81,13 +81,14 @@ class Show_Results(Frame):
 			lbl3.grid(row=2, column = 9)
 			lbl4 = Label(self, text="Your Answer(s)", font = ('Times', 15, 'italic'))
 			lbl4.grid(row=2, column = 18)
+
 			for i in range(len(questionList)):
-				
-				q1 = Label(self, text="{}. {}.".format(i+1, questionList[i][0]), font = ('Times', 14, 'normal'))
-				q1.grid(row=row, column=0, sticky=W)
+
+				Q = Label(self, text="{}. {}".format(i+1, questionList[i][0]), font = ('Times', 14, 'normal'))
+				Q.grid(row=row, column = 0, sticky=NW, pady = 2)
 				correctAnswer = Label(self, text="{}    {}    {}".format('A1: ' + questionList[i][1][0], 'A2: ' + questionList[i][1][1] if len(questionList[i][1]) >= 2 else "", 'A3: ' + questionList[i][1][2] if len(questionList[i][1]) >= 3 else ""), font = ('Times', 12, 'bold'))
 				correctAnswer.grid(row = row, column = 9, sticky=W)
-				yourAnswer = Label(self, text="{}    {}    {}    {}".format(userAnswers[i][0], userAnswers[i][1] if len(userAnswers[i]) >= 2 else "", 
+				yourAnswer = Label(self, text="{}    {}    {}    {}".format(userAnswers[i][0] if len(userAnswers[i]) >= 1 else "", userAnswers[i][1] if len(userAnswers[i]) >= 2 else "", 
 					userAnswers[i][2] if len(userAnswers[i]) >= 3 else "", userAnswers[i][3] if len(userAnswers[i]) >= 4 else ""), font = ('Times', 14, 'normal'))
 				yourAnswer.grid(row=row, column=18, sticky = W)
 
