@@ -13,11 +13,12 @@ class Take_Test(Frame):
 	""" 	TAKE SUMMATIVE OR FORMATIVE TEST
 	"""
 
-	def __init__(self, master, testName, timelimit, student, attempts = 0):
+	def __init__(self, master, testName, timelimit, student, testType, attempts = 0):
 		Frame.__init__(self, master)
 		self.testName = testName
 		self.student = student
 		self.timelimit = timelimit
+		self.testType = testType
 		self.attempts = attempts
 		self.get_questions()
 		self.master.title(testName)
@@ -58,8 +59,12 @@ class Take_Test(Frame):
 		answ3.grid(row = 6, column = 6, pady = 4, columnspan = 1, sticky=W)
 		answ4 = Label(self, text="{}".format(questionList[0][4]), font = ('MS', 10,'normal'))
 		answ4.grid(row = 8, column = 6, pady =4 , columnspan = 1, sticky=W)
-		clock = Label(self, text="Test ends at {}:{}".format((datetime.datetime.now() + datetime.timedelta(minutes=int(self.timelimit[0]))).hour,(datetime.datetime.now() + datetime.timedelta(minutes=int(self.timelimit[0]))).minute), font = ('Times', 14, 'italic'))
-		clock.grid(row=15, column=0, pady=5, columnspan = 8)
+		if self.testType == 'S':
+			nowtime = datetime.datetime.now() + datetime.timedelta(minutes=int(self.timelimit[0]))
+			clock = Label(self, text="Test ends at {}:{}".format(nowtime.hour, nowtime.minute), font = ('Times', 14, 'italic'))
+			clock.grid(row=15, column=0, pady=5, columnspan = 8)
+
+
 		self.varCB1 = IntVar()
 		CB1 = Checkbutton(self, text="", variable=self.varCB1)
 		CB1.grid(row=2, column=4, columnspan=1, sticky=W)

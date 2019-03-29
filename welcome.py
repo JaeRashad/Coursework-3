@@ -65,12 +65,17 @@ class Welcome(Frame):
         with open('tests_overview.csv') as csvfile:
             rdr = csv.reader(csvfile)
             for row in rdr:
-                #print(row[0])
                 if row[0] == module:#Might need to add in the fact that a test gets taken
-                    #> row[4] is TEST DURATION, adding it to test_list mean the duration vars are more accessible
-                    #> row[5] is ATTEMPTS  allowed - 1 for summative, 3 for formative
-                    #> row[2] is TEST TYPE
-                    test_list.append((row[1], row[4], row[5], row[2])) 
+                    
+                        #> row[4] is TEST DURATION, adding it to test_list mean the duration vars are more accessible
+                        #> row[5] is ATTEMPTS  allowed - 1 for summative, 3 for formative
+                        #> row[2] is TEST TYPE
+                        #print("row 6:", row[6])
+                        #print("row 6 type", type(row[6]))
+                    test_list.append((row[1], row[4], row[5], row[2], row[6]))
+                    #else:
+                    #    print("row 6:", row[6])
+                    #    test_list.append((row[1], row[4], row[5], row[2], row[6]))
         if len(test_list) == 0:
             # rather than return empty list, return -1
             return -1
@@ -180,6 +185,7 @@ class Welcome(Frame):
                 testDuration = simpledialog.askinteger("Input", "Enter the test duration time in minutes.\n (Min: 15, Max: 120)")
                 if testDuration < 15:
                     #> change testDuration to 15 
+                    #testDuration = 15
                     pass 
                 elif testDuration > 120:
                     testDuration = 120
@@ -197,10 +203,7 @@ class Welcome(Frame):
             # check if the file already exists in the folder or if testName for the selected module is already in tests_overview
             if os.path.isfile('.\\{}.csv'.format(testName)) == False and testName not in test_list:
                 
-                #t1 = Toplevel()
-                #t1.title("Test")
                 
-                Test.test_file(testName, testType.upper(), strModule, name, testDuration)
                 if duedate == False:
                     Test.test_file(testName, testType.upper(), strModule, name, testDuration)
                 else:
@@ -254,13 +257,13 @@ class Welcome(Frame):
                         db.close()
                         t1 = Toplevel()
                         t1.geometry("700x300")
-                        app = TakeTest.Take_Test(t1, testName, timeLimit, login.username, attempts)  
+                        app = TakeTest.Take_Test(t1, testName, timeLimit, login.username, testType, attempts)  
                         
             except KeyError: # if database for test doesn't contain student's userID, it will return KeyError
                 db.close()
                 t1 = Toplevel()
                 t1.geometry("700x300")
-                app = TakeTest.Take_Test(t1, testName, timeLimit, login.username)
+                app = TakeTest.Take_Test(t1, testName, timeLimit, login.username, testType)
         else:
             messagebox.showwarning("ERROR", "Please select a test to take!")
 
@@ -268,9 +271,30 @@ class Welcome(Frame):
         if self.listTest.curselection() != ():
             index = self.listTest.curselection()[0]
             testname = str(self.listTest.get(index))
+            testType = [i[3] for i in test_list if i[0] == testname]
+            testType = str(testType[0])
+            
             t1 = Toplevel()
-            fdbck = Feedback.Show_Results(t1, login.username, testname)
-
+            if testType == 'S':
+                #> this is horrible...
+                duedate = self.turnDueDateToObject(testname)
+                print(duedate)
+                fdbck = Feedback.Show_Results(t1, login.username, testname, testType, duedate)
+            elif testType == 'F':
+                fdbck = Feedback.Show_Results(t1, login.username, testname, testType)
+            else:
+                messagebox.showwarning("Error", "Is your testtype a string other than 'F' or 'S'?")
+    def turnDueDateToObject(self, testname):
+        print("Getting duedate and doing stuff...........")
+        #> get the duedate
+        duedate = [i[4] for i in test_list if i[0] == testname][0].split()
+        #> split the string in to date and time
+        theDate = duedate[0].split("-") #> [year, month, day]
+        theTime = duedate[1].split(":") #> [hour, minute, second]
+        #> create datetime object, convert values to ints as they are strings
+        dueDate = datetime.datetime(int(theDate[0]), int(theDate[1]), int(theDate[2]), 
+            int(theTime[0]), int(theTime[1]), int(theTime[2]))
+        return dueDate
 #mainloop
 if login.username != "":
     root = Tk()
