@@ -75,6 +75,7 @@ class Welcome(Frame):
                     if row[2] == "F":
                         test_list.append((row[1], row[4], row[5], row[2]))
                     else:
+                    	#> STORE THE DUEDATE AT INDEX 4 OF THE TUPLE
                         test_list.append((row[1], row[4], row[5], row[2], row[6]))
                     #else:
                     #    print("row 6:", row[6])
@@ -256,13 +257,17 @@ class Welcome(Frame):
             #check if students ID exists in database, if it returns True then do not allow student to take test if test (if test is summative)
             try:
                 if testType == 'S':
-                    """WE only have test name to work on :( so i have to check all of the test_overview file for the datetime"""
+                    """WE only have test name to work on :( so i have to check all of the test_overview file for the datetime
+                    
+                    #> Duedate is saved in test_list as the 4th index so don't need this 
                     with open('tests_overview.csv') as csv_file:
                         csv_reader = csv.reader(csv_file, delimiter=',')
                         for row in csv_reader:
                             if row[1] == testName:
                                 dueDate = row[6]
-                    duedate = parser.parse(dueDate)
+                    """
+                    #duedate = parser.parse(dueDate)
+                    duedate = self.turnDueDateToObject(testName) #> Dis be quicker! 
                     now = datetime.datetime.now()
                     if now>duedate:#current due date has passed :( therefore don't allow student to take test
                         messagebox.showinfo("TOO LATE!!!","Sorry, the due date for this assesment has passed already")
@@ -309,6 +314,7 @@ class Welcome(Frame):
             else:
                 messagebox.showwarning("Error", "Is your testtype a string other than 'F' or 'S'?")
     def turnDueDateToObject(self, testname):
+    	#""" This function converts the test's duedate to a datetime.datetime object """
         print("Getting duedate and doing stuff...........")
         #> get the duedate
         duedate = [i[4] for i in test_list if i[0] == testname][0].split()
