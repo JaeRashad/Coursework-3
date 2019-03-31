@@ -26,7 +26,7 @@ class Show_Results(Frame):
 		self.deadline = deadline
 		self.get_questions()
 		try:
-			print("Here")
+			#print("Here")
 			self.getUserAnswers()
 			self.labels()
 		except AttributeError:
@@ -34,7 +34,7 @@ class Show_Results(Frame):
 			messagebox.showwarning("Error", "You've not taken this test.")
 			self.master.destroy()
 	def labels(self):
-
+		global score, userAnswers
 		self.grid()
 		lbl1 = Label(self, text="Test: {}".format(self.testname.upper()), bg = '#55FF61',font = ('Times', 16, 'bold'))
 		lbl1.grid(row=0, column = 0, sticky=W)
@@ -45,9 +45,11 @@ class Show_Results(Frame):
 		lbl2 = Label(self, text="Student: {}".format(self.student.upper()), bg = '#55FF61', font = ('Times', 16, 'bold'))
 		lbl2.grid(row=0, column = 1, sticky=W)
 		score = self.getValues()
-
-		lbl3 = Label(self, text="Score: {} / {} ".format(str(score), len(questionList)), font = ('Times', 16, 'italic'))
-		lbl3.grid(row=0, column = 2, columnspan= 14, sticky=W)
+		lbl3 = Label(self, text="{}".format("Attempt: " + str(attempt) if (self.testType == 'F' and attempt < 3) else ""), font = ('Times', 16, 'normal'))
+		#>  foreground= '#01cdee' - font colour 
+		lbl3.grid(row = 0, column = 2)
+		lbl4 = Label(self, text="Score: {} / {} ".format(str(score), len(questionList)), font = ('Times', 16, 'bold'))
+		lbl4.grid(row=0, column = 3, columnspan= 14, sticky=W)
 		
 		photo1 = PhotoImage(file="good_mark.gif")	
 		photo2 = PhotoImage(file="bad_mark.gif")
@@ -98,6 +100,12 @@ class Show_Results(Frame):
 					userAnswers[i][2] if len(userAnswers[i]) >= 3 else "", userAnswers[i][3] if len(userAnswers[i]) >= 4 else ""), font = ('Times', 14, 'normal'))
 				yourAnswer.grid(row=row, column=18, sticky = W)
 
+				#>
+				#> NOTE THIS WILL CAUSE A BUG WHERE IF WHEN CREATING A TEST YOU SET TWO ANSWER CHOICES TO HAVE THE SAME VALUE BUT  
+				#> YOU ONLY SELECT ONE OF THEM AS THE CORRECT ANSWER, THEN IF THE STUDENT SELECTS THE 'INCORRECT' ONE FROM THE TWO THE 
+				#> CODE BELOW WILL STILL SHOW A GREEN TICK AS COMPARING THE STUDENT'S ANSWER WITH THE CORRECT ANSWER RETURNS TRUE. WHILE THIS
+				#> WON'T AFFECT THEIR SCORE IT WILL CAUSE AN INCONSISTENCY BETWEEN THE NO OF GREEN TICKS AND THE SCORE.....
+				#>  
 				if questionList[i][1] == userAnswers[i]:
 					print(questionList[i][1],"-",userAnswers[i])
 					tick = Label(self, image=photo1)
@@ -125,7 +133,7 @@ class Show_Results(Frame):
 			for j, val in enumerate(answer):
 				if val == 1:
 				#print(j, val)
-					temp.append(answersInStringForm[i][j])
+					temp.append(answersInStringForm[i][j]) #> get the answer tuple at index i and in that get the value at index j
 			userAnswers.append(tuple(temp))
 		data.close()
 		return userAnswers
@@ -145,23 +153,29 @@ class Show_Results(Frame):
 		score = 0
 		correctAnswers = []
 		self.result = []
-		self.result = shelve.open("test_results/" + self.testname + "_results").get(self.student).toString()
-		#result = data.get(self.student).toString()
+		db = shelve.open("test_results/" + self.testname + "_results")
+		self.result = db.get(self.student).toString()
+		print(self.result)
+		db.close()
 		
+		#> Get the answers to the questions and store in var correctAnswers
 		with open(self.testname+".csv") as testfile:
 			rdr = csv.reader(testfile)
 			for row in rdr:
 				correctAnswers.append((int(row[5]),int(row[6]),int(row[7]),int(row[8])))
-
+		#> iterate through the answers and enumerate them, 
 		for i, answer in enumerate(correctAnswers):
 			#print(answer)
+			print(self.result[2][i], answer)
+			print(type(self.result[2][i]), type(answer))
 			if self.result[2][i] == answer:
+				print(True)
 				score += 1
-			#print()
+		#print()
 		#data.close()
 		#print("correctAnswers: ", correctAnswers)
 		#shelve.close("test_results/" + self.testname + "_results")
-
+		print(score)
 		return score
 
 	def get_questions(self):
