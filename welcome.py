@@ -93,7 +93,7 @@ class Welcome(Frame):
             butCreate.grid(row=8, column=0, columnspan=2)
             butEdit = Button(self, text='Edit Test', font=('MS', 8,'bold'), command=self.editTest)
             butEdit.grid(row = 8, column = 3, columnspan=2)
-            butView = Button(self, text='View', font=('MS', 8,'bold'), command=None)
+            butView = Button(self, text='View', font=('MS', 8,'bold'), command=self.viewResults)
             butView.grid(row = 8, column = 2, columnspan=2)
         else:
             butTake = Button(self, text='Take TEST!',font=('MS', 8,'bold'), command = self.takeTest)#rename me to thing depending on whether or not you are a teacher
@@ -103,7 +103,18 @@ class Welcome(Frame):
 
     def viewResults(self):
         ''' Function to view the class results and individual student results '''
-        pass
+        if self.listTest.curselection() != ():
+            index = self.listTest.curselection()[0]
+            testname = str(self.listTest.get(index))
+            testType = [i[3] for i in test_list if i[0] == testname]
+            testType = str(testType[0])
+            print(testType)
+            t1 = Toplevel()
+            string = ""
+            lblModules = Label(self, text=string, font=('MS', 8,'bold'))
+            lblModules.grid(row=2, column=0, columnspan=2, sticky=NE)
+                
+            
         
         
     def checkTest(self):
@@ -287,7 +298,6 @@ class Welcome(Frame):
             testname = str(self.listTest.get(index))
             testType = [i[3] for i in test_list if i[0] == testname]
             testType = str(testType[0])
-            
             t1 = Toplevel()
             if testType == 'S':
                 #> this is horrible...
