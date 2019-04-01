@@ -124,15 +124,10 @@ class Welcome(Frame):
                 for b, answer in enumerate(correctAnswers):
                         if result[2][b] == answer:
                                 score += 1
-                print("THE SCORE IS: ", score, students[i])
-
-
-            attempts = db.get(str(students[0])).toString()[1]
-            t1 = Toplevel()
-            string = ""
-            lblModules = Label(self, text=string, font=('MS', 8,'bold'))
-            lblModules.grid(row=2, column=0, columnspan=2, sticky=NE)
-            
+                students[i] = (students[i], score)
+            print(students)
+            import ClassResults
+            classResult = ClassResults.class_results(Tk(), students, testname)
         
         
     def checkTest(self):
