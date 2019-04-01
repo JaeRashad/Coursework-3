@@ -109,11 +109,14 @@ class Welcome(Frame):
             db = shelve.open("test_results/"+testname+"_results")
             students = []
             attempts = []
+            all_students = [[]]
+            position = 0
+            total = 0
             for item in db:
                 students.append(item)
             for i in range(len(students)):
                 results = db.get(students[i]).toString()[2]
-                attempts.append(db.get(students[i]).toString()[1])
+                #attempts.append(db.get(students[i]).toString()[1])
                 score = 0
                 correctAnswers = []
                 result = db.get(students[i]).toString()
@@ -122,17 +125,34 @@ class Welcome(Frame):
                         rdr = csv.reader(testfile)
                         for row in rdr:
                                 correctAnswers.append((int(row[5]),int(row[6]),int(row[7]),int(row[8])))
-                #> iterate through the answers and enumerate them, 
+                #> iterate through the answers and enumerate them,
                 for b, answer in enumerate(correctAnswers):
-                        if result[2][b] == answer:
-                                score += 1
-                students[i] = (students[i], score)  
+                    if result[2][b] == answer:
+                        score += 1
+                        all_students[position].append(1)
+                    else:
+                        all_students[position].append(0)
+                all_students.append([])
+                position += 1
+                students[i] = (students[i], score)
+            question_x = [0]*(len(all_students[0]))
+            all_students.pop(len(all_students)-1)
+            for i in range(len(all_students[0])):
+                for student in all_students:
+                    question_x[i] += student[i]
 
+            question_list = []
+            for i in range(len(question_x)):
+                question_x[i] = question_x[i]/len(all_students)*100
+                question_list.append(i+1)
+            print(all_students)
+            print(question_x)
+            
             import testgrades
-            testgrades.display_graph(attempts, students)
-
             import ClassResults
             classResult = ClassResults.class_results(Tk(), students, testname)
+            testgrades.display_graph(question_x, question_list)
+
 
         
         
