@@ -94,7 +94,7 @@ class Welcome(Frame):
             butCreate.grid(row=8, column=0, columnspan=2)
             butEdit = Button(self, text='Edit Test', font=('MS', 8,'bold'), command=self.editTest)
             butEdit.grid(row = 8, column = 3, columnspan=2)
-            butView = Button(self, text='View', font=('MS', 8,'bold'), command=self.viewResults)
+            butView = Button(self, text='View Class results', font=('MS', 8,'bold'), command=self.viewClassResults)
             butView.grid(row = 8, column = 2, columnspan=2)
         else:
             butTake = Button(self, text='Take TEST!',font=('MS', 8,'bold'), command = self.takeTest)#rename me to thing depending on whether or not you are a teacher
@@ -102,19 +102,36 @@ class Welcome(Frame):
             butResult = Button(self, text='View Result',font=('MS', 8,'bold'), command = self.getResult)
             butResult.grid(row=8, column=3, columnspan=2)
 
-    def viewResults(self):
-        ''' Function to view the class results and individual student results '''
+    def viewClassResults(self):
         if self.listTest.curselection() != ():
             index = self.listTest.curselection()[0]
             testname = str(self.listTest.get(index))
-            testType = [i[3] for i in test_list if i[0] == testname]
-            testType = str(testType[0])
-            print(testType)
+            db = shelve.open("test_results/"+testname+"_results")
+            students = []
+            for item in db:
+                students.append(item)
+            for i in range(len(students)):
+                results = db.get(students[i]).toString()[2] 
+                score = 0
+                correctAnswers = []
+                result = db.get(students[i]).toString()
+                #> Get the answers to the questions and store in var correctAnswers
+                with open(testname+".csv") as testfile:
+                        rdr = csv.reader(testfile)
+                        for row in rdr:
+                                correctAnswers.append((int(row[5]),int(row[6]),int(row[7]),int(row[8])))
+                #> iterate through the answers and enumerate them, 
+                for b, answer in enumerate(correctAnswers):
+                        if result[2][b] == answer:
+                                score += 1
+                print("THE SCORE IS: ", score, students[i])
+
+
+            attempts = db.get(str(students[0])).toString()[1]
             t1 = Toplevel()
             string = ""
             lblModules = Label(self, text=string, font=('MS', 8,'bold'))
             lblModules.grid(row=2, column=0, columnspan=2, sticky=NE)
-                
             
         
         
