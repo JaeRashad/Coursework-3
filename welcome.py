@@ -130,7 +130,10 @@ class Welcome(Frame):
 
             import testgrades
             testgrades.display_graph(attempts, students)
-            
+
+            import ClassResults
+            classResult = ClassResults.class_results(Tk(), students, testname)
+
         
         
     def checkTest(self):
