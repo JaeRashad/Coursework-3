@@ -46,7 +46,7 @@ class Show_Results(Frame):
 		lbl2 = Label(self, text="Student: {}".format(self.student.upper()), bg = '#55FF61', font = ('Times', 16, 'bold'))
 		lbl2.grid(row=0, column = 1, sticky=W)
 		score = self.getValues()
-		lbl3 = Label(self, text="{}".format("Attempt: " + str(attempt) if (self.testType == 'F' and attempt < 3) else ""), font = ('Times', 16, 'normal'))
+		lbl3 = Label(self, text="{}".format("Attempt: " + str(attempt) if (self.testType == 'F') else ""), font = ('Times', 16, 'bold'))
 		#>  foreground= '#01cdee' - font colour 
 		lbl3.grid(row = 0, column = 2)
 		lbl4 = Label(self, text="Score: {} / {} ".format(str(score), len(questionList)), font = ('Times', 16, 'bold'))

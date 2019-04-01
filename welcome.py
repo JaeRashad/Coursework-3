@@ -108,10 +108,12 @@ class Welcome(Frame):
             testname = str(self.listTest.get(index))
             db = shelve.open("test_results/"+testname+"_results")
             students = []
+            attempts = []
             for item in db:
                 students.append(item)
             for i in range(len(students)):
-                results = db.get(students[i]).toString()[2] 
+                results = db.get(students[i]).toString()[2]
+                attempts.append(db.get(students[i]).toString()[1])
                 score = 0
                 correctAnswers = []
                 result = db.get(students[i]).toString()
@@ -124,15 +126,14 @@ class Welcome(Frame):
                 for b, answer in enumerate(correctAnswers):
                         if result[2][b] == answer:
                                 score += 1
-                print("THE SCORE IS: ", score, students[i])
+                students[i] = (students[i], score)  
 
+            import testgrades
+            testgrades.display_graph(attempts, students)
 
-            attempts = db.get(str(students[0])).toString()[1]
-            t1 = Toplevel()
-            string = ""
-            lblModules = Label(self, text=string, font=('MS', 8,'bold'))
-            lblModules.grid(row=2, column=0, columnspan=2, sticky=NE)
-            
+            import ClassResults
+            classResult = ClassResults.class_results(Tk(), students, testname)
+
         
         
     def checkTest(self):
