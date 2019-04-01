@@ -17,13 +17,14 @@ attempt = int()
 
 class Show_Results(Frame):
 	""" Displays results without showing answers, for formative tests when it's not the final attempt """
-	def __init__(self, master, ID, testname, testType, deadline = 0):
+	def __init__(self, master, ID, testname, testType, deadline = 0, isTeacher = False):
 		Frame.__init__(self, master)
 		self.testType = testType
 		self.student = ID
 		self.testname = testname
 		self.master.title("Results")
 		self.deadline = deadline
+		self.isTeacher = isTeacher
 		self.get_questions()
 		try:
 			#print("Here")
@@ -55,7 +56,12 @@ class Show_Results(Frame):
 		photo2 = PhotoImage(file="bad_mark.gif")
 		row = 3
 
-		datetimeNow =  datetime.datetime.now()
+		if self.isTeacher == True and self.testType == "F":
+			attempts = 3
+		elif self.isTeacher == False and self.testType == 'S':
+			datetimeNow = self.deadline
+		else:
+			datetimeNow =  datetime.datetime.now()
 		lblQ = Label(self, text="Questions", font = ('Times', 15, 'italic'))
 		lblQ.grid(row = 2, column = 0, sticky = W)
 
