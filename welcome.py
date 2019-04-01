@@ -85,6 +85,10 @@ class Welcome(Frame):
             return -1
         else:
             return test_list
+    def getIndividualResults(self):
+        import viewResult
+
+        viewResult.View_Results(Toplevel())
 
     def createButtons(self):
         butCheck = Button(self, text='Check for Tests',font=('MS', 8,'bold'), command=self.checkTest)
@@ -95,7 +99,10 @@ class Welcome(Frame):
             butEdit = Button(self, text='Edit Test', font=('MS', 8,'bold'), command=self.editTest)
             butEdit.grid(row = 8, column = 3, columnspan=2)
             butView = Button(self, text='View Class results', font=('MS', 8,'bold'), command=self.viewClassResults)
-            butView.grid(row = 8, column = 2, columnspan=2)
+            butView.grid(row = 8, column = 6, columnspan=2)
+            butIndv = Button(self, text='View Individual Results', font=('MS', 8,'bold'), command=self.getIndividualResults)
+            butIndv.grid(row = 8, column = 9, columnspan=2)
+
         else:
             butTake = Button(self, text='Take TEST!',font=('MS', 8,'bold'), command = self.takeTest)#rename me to thing depending on whether or not you are a teacher
             butTake.grid(row=8, column=0, columnspan=2)

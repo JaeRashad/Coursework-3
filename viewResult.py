@@ -3,7 +3,6 @@ import csv
 import shelve
 import Feedback
 users = []
-userno = {}
 
 class View_Results(Frame):
 #GUI Setup
@@ -22,9 +21,8 @@ class View_Results(Frame):
             csv_reader = csv.reader(csv_file,delimiter=",")
             for row in csv_reader:
                 if row[2] == "student":
-                    users.append(row[3])
-                    userno[row[3]] = row[0]
-                    print(userno)
+                    users.append(row[0])
+                    #print(userno)
 
     def Scroll(self):
         scrollbar = Scrollbar()
@@ -40,13 +38,13 @@ class View_Results(Frame):
   
 
     def getStudentTest(self):
-        global studentName
+        global studentNo
         global testType
         textbox = []
         index = self.listbox.curselection()[0]
-        studentName = str(self.listbox.get(index))
-        print(studentName)
-        studentNo = userno[studentName]
+        studentNo = str(self.listbox.get(index))
+        #print(studentName)
+        
         correctAnswers = []
         testName = []
         with open("tests_overview.csv") as csv_file:
@@ -69,10 +67,10 @@ class View_Results(Frame):
     def getStudentResult(self):
         index = self.listtests.curselection()[0]
         testname = str(self.listtests.get(index))
-        username = userno[studentName]
-        print(testname,username)
-        t1 = Toplevel()
-        fdbck = Feedback.Show_Results(t1, username, testname, testType, True)
+        #username = userno[studentName]
+        #print(testname,username)
+        #t1 = Toplevel()
+        fdbck = Feedback.Show_Results(Toplevel(), studentNo, testname, testType, 0,True)
 
 
         
@@ -95,7 +93,3 @@ class View_Results(Frame):
             int(theTime[0]), int(theTime[1]), int(theTime[2]))
         return dueDate
 
-
-root = Tk()
-app = View_Results(root)
-root.mainloop()
