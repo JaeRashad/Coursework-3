@@ -41,8 +41,7 @@ class View_Results(Frame):
         lblLists.grid(row=4, column=0, columnspan=2, sticky=NW)
         self.listtests = Listbox(self, height=3)
         self.listtests.grid(column = 1, row=5)
-        listtests.config(yscrollcommand=scrollbar.set)
-        scrollbar.config(command=listtests.yview)
+    
   
 
     def getStudentTest(self):
@@ -86,10 +85,10 @@ class View_Results(Frame):
         
     def createButtons(self):
         # button creation 
-        nextButton = Button(self, text="select", command=self.getStudentTest)
-        nextButton.grid(column = 3,row = 2)
-        resultButton = Button(self, text="select", command=self.getStudentResult)
-        resultButton.grid(column = 3,row = 6)
+        nextButton = Button(self, text="Select", command=self.getStudentTest)
+        nextButton.grid(column = 3,row = 2,sticky=E)
+        resultButton = Button(self, text="View Feedback", command=self.getStudentResult)
+        resultButton.grid(column = 3,row = 6, sticky=E)
 
     def turnDueDateToObject(self, testname):
     	#""" This function converts the test's duedate to a datetime.datetime object """
