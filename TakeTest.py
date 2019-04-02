@@ -15,6 +15,7 @@ class Take_Test(Frame):
 
 	def __init__(self, master, testName, timelimit, student, testType, attempts = 0):
 		Frame.__init__(self, master)
+		self.master.protocol("WM_DELETE_WINDOW", self.on_delete)
 		self.testName = testName
 		self.student = student
 		self.timelimit = timelimit
@@ -40,7 +41,9 @@ class Take_Test(Frame):
 			duration = int(self.timelimit[0])*60000
 			print("Test Duration:",duration / 60000, "minutes")
 			self.master.after(duration, self.timeUp)
-	
+	def on_delete(self):
+		if messagebox.askokcancel("WARNING", "Closing the test will submit it!"):
+			self.submit(True)
 	def timeUp(self):
 		messagebox.showwarning("Time's up", "You ran out of time!")
 		self.submit(True)
