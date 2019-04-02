@@ -27,20 +27,22 @@ class View_Results(Frame):
 
     def Scroll(self):
         # create the list boxes
-        scrollbar = Scrollbar()
-        scrollbar.grid(column = 1, row = 0)
+        #scrollbar = Scrollbar()
+        #scrollbar.grid(column = 0, row = 0, sticky=E)
 
-        lblStudent = Label(self, text="Students", font=("MS",8,"bold"))
+        lblStudent = Label(self, text="Select a student:", font=("MS",8,"bold"))
         lblStudent.grid(row=0, column=0, columnspan=2, sticky=NW)
         self.listbox = Listbox(self, height=3)
         for i in users:
             self.listbox.insert(END, i)
         self.listbox.grid(column = 1, row=1)
 
-        lblLists = Label(self, text="Tests the student has taken:", font=("MS",8,"bold"))
-        lblLists.grid(row=2, column=0, columnspan=2, sticky=NW)
+        lblLists = Label(self, text="Select a test the student has taken:", font=("MS",8,"bold"))
+        lblLists.grid(row=4, column=0, columnspan=2, sticky=NW)
         self.listtests = Listbox(self, height=3)
         self.listtests.grid(column = 1, row=5)
+        listtests.config(yscrollcommand=scrollbar.set)
+        scrollbar.config(command=listtests.yview)
   
 
     def getStudentTest(self):
@@ -85,7 +87,7 @@ class View_Results(Frame):
     def createButtons(self):
         # button creation 
         nextButton = Button(self, text="select", command=self.getStudentTest)
-        nextButton.grid(column = 3,row = 1)
+        nextButton.grid(column = 3,row = 2)
         resultButton = Button(self, text="select", command=self.getStudentResult)
         resultButton.grid(column = 3,row = 6)
 
