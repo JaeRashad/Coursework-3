@@ -85,6 +85,10 @@ class Welcome(Frame):
             return -1
         else:
             return test_list
+    def getIndividualResults(self):
+        import viewResult
+
+        viewResult.View_Results(Toplevel())
 
     def createButtons(self):
         butCheck = Button(self, text='Check for Tests',font=('MS', 8,'bold'), command=self.checkTest)
@@ -95,7 +99,10 @@ class Welcome(Frame):
             butEdit = Button(self, text='Edit Test', font=('MS', 8,'bold'), command=self.editTest)
             butEdit.grid(row = 8, column = 3, columnspan=2)
             butView = Button(self, text='View Class results', font=('MS', 8,'bold'), command=self.viewClassResults)
-            butView.grid(row = 8, column = 2, columnspan=2)
+            butView.grid(row = 8, column = 6, columnspan=2)
+            butIndv = Button(self, text='View Individual Results', font=('MS', 8,'bold'), command=self.getIndividualResults)
+            butIndv.grid(row = 8, column = 9, columnspan=2)
+
         else:
             butTake = Button(self, text='Take TEST!',font=('MS', 8,'bold'), command = self.takeTest)#rename me to thing depending on whether or not you are a teacher
             butTake.grid(row=8, column=0, columnspan=2)
@@ -108,10 +115,15 @@ class Welcome(Frame):
             testname = str(self.listTest.get(index))
             db = shelve.open("test_results/"+testname+"_results")
             students = []
+            attempts = []
+            all_students = [[]]
+            position = 0
+            total = 0
             for item in db:
                 students.append(item)
             for i in range(len(students)):
-                results = db.get(students[i]).toString()[2] 
+                results = db.get(students[i]).toString()[2]
+                #attempts.append(db.get(students[i]).toString()[1])
                 score = 0
                 correctAnswers = []
                 result = db.get(students[i]).toString()
@@ -120,19 +132,35 @@ class Welcome(Frame):
                         rdr = csv.reader(testfile)
                         for row in rdr:
                                 correctAnswers.append((int(row[5]),int(row[6]),int(row[7]),int(row[8])))
-                #> iterate through the answers and enumerate them, 
+                #> iterate through the answers and enumerate them,
                 for b, answer in enumerate(correctAnswers):
-                        if result[2][b] == answer:
-                                score += 1
-                print("THE SCORE IS: ", score, students[i])
+                    if result[2][b] == answer:
+                        score += 1
+                        all_students[position].append(1)
+                    else:
+                        all_students[position].append(0)
+                all_students.append([])
+                position += 1
+                students[i] = (students[i], score)
+            question_x = [0]*(len(all_students[0]))
+            all_students.pop(len(all_students)-1)
+            for i in range(len(all_students[0])):
+                for student in all_students:
+                    question_x[i] += student[i]
 
-
-            attempts = db.get(str(students[0])).toString()[1]
-            t1 = Toplevel()
-            string = ""
-            lblModules = Label(self, text=string, font=('MS', 8,'bold'))
-            lblModules.grid(row=2, column=0, columnspan=2, sticky=NE)
+            question_list = []
+            for i in range(len(question_x)):
+                question_x[i] = question_x[i]/len(all_students)*100
+                question_list.append(i+1)
+            print(all_students)
+            print(question_x)
             
+            import testgrades
+            import ClassResults
+            classResult = ClassResults.class_results(Tk(), students, testname)
+            testgrades.display_graph(question_x, question_list)
+
+
         
         
     def checkTest(self):
