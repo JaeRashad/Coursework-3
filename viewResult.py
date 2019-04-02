@@ -15,6 +15,7 @@ class View_Results(Frame):
         self.Scroll()
         
     def showUsers(self):
+        # get the students number to display
         global users
         global userno
         with open("users.csv") as csv_file:
@@ -25,19 +26,25 @@ class View_Results(Frame):
                     #print(userno)
 
     def Scroll(self):
+        # create the list boxes
         scrollbar = Scrollbar()
         scrollbar.grid(column = 1, row = 0)
 
+        lblStudent = Label(self, text="Students", font=("MS",8,"bold"))
+        lblStudent.grid(row=0, column=0, columnspan=2, sticky=NW)
         self.listbox = Listbox(self, height=3)
         for i in users:
             self.listbox.insert(END, i)
-        self.listbox.grid(column = 1, row=0)
+        self.listbox.grid(column = 1, row=1)
 
+        lblLists = Label(self, text="Tests the student has taken:", font=("MS",8,"bold"))
+        lblLists.grid(row=2, column=0, columnspan=2, sticky=NW)
         self.listtests = Listbox(self, height=3)
         self.listtests.grid(column = 1, row=5)
   
 
     def getStudentTest(self):
+        # get the students tests they have completed
         global studentNo
         global testType
         textbox = []
@@ -65,6 +72,7 @@ class View_Results(Frame):
 
         
     def getStudentResult(self):
+        # retrieve their results 
         index = self.listtests.curselection()[0]
         testname = str(self.listtests.get(index))
         #username = userno[studentName]
@@ -75,6 +83,7 @@ class View_Results(Frame):
 
         
     def createButtons(self):
+        # button creation 
         nextButton = Button(self, text="select", command=self.getStudentTest)
         nextButton.grid(column = 3,row = 1)
         resultButton = Button(self, text="select", command=self.getStudentResult)
