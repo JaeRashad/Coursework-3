@@ -108,7 +108,7 @@ class Take_Test(Frame):
 		#questionList = []
 		print(f'Test Submitted\nUserID: {self.student}\tAttempt: {self.attempts+1} \nAnswers: {answers}')
 		db.close()
-		self.client_exit()
+		self.master.destroy()
 
 	def submit(self, isTimeUp = False):
 		if isTimeUp == False:
@@ -155,7 +155,8 @@ class Take_Test(Frame):
 	def client_exit(self):
 		#global questionList
 		#questionList = []
-		self.master.destroy()
+		self.on_delete()
+		#self.master.destroy()
 	
 	def on_save(self):
 		global question_nr, answers
