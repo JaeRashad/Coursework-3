@@ -291,58 +291,55 @@ class Welcome(Frame):
         if self.listTest.curselection() != ():
             index = self.listTest.curselection()[0]
             testName= str(self.listTest.get(index))
-            print("Taking Test:", testName)
-            
-            #> open the database situated in the test_results folder.
-            #> 
-            #> Retrieve test duration
-            timeLimit = [i[1] for i in test_list if i[0] == testName]
-            attemptsAllowed = [i[2] for i in test_list if i[0] == testName]
             testType = [i[3] for i in test_list if i[0] == testName]
             testType = str(testType[0]) #> convert it to a string
-            print("attemptsAllowed =",attemptsAllowed[0])
-            print("testType =",testType)
-            db = shelve.open("test_results/"+testName+"_results")
-            #check if students ID exists in database, if it returns True then do not allow student to take test if test (if test is summative)
-            try:
-                if testType == 'S':
-                    """WE only have test name to work on :( so i have to check all of the test_overview file for the datetime
-                    
-                    #> Duedate is saved in test_list as the 4th index so don't need this 
-                    with open('tests_overview.csv') as csv_file:
-                        csv_reader = csv.reader(csv_file, delimiter=',')
-                        for row in csv_reader:
-                            if row[1] == testName:
-                                dueDate = row[6]
-                    """
-                    #duedate = parser.parse(dueDate)
-                    duedate = self.turnDueDateToObject(testName) #> Dis be quicker! 
-                    now = datetime.datetime.now()
-                    if now>duedate:#current due date has passed :( therefore don't allow student to take test
-                        messagebox.showinfo("TOO LATE!!!","Sorry, the due date for this assesment has passed already")
-                    else:
-                        db[login.username]
-                        messagebox.showinfo("Can't take summative test!", "You have already sat this test")
-                    db.close()
-
-                elif testType == 'F':
-                    db[login.username]
-                    attempts = db.get(str(login.username)).toString()[1]
-                    print("You have made {} attempts so far".format(attempts))
-                    if attempts == 3:
-                        messagebox.showinfo("Can't take formative test!", "You have already used your final attempt")
-                        db.close()
-                    else:
-                        db.close()
-                        t1 = Toplevel()
-                        t1.geometry("700x300")
-                        app = TakeTest.Take_Test(t1, testName, timeLimit, login.username, testType, attempts)  
+            timeLimit = [i[1] for i in test_list if i[0] == testName]
+            attemptsAllowed = [i[2] for i in test_list if i[0] == testName]
+            if messagebox.askokcancel("Are you sure", "This is a test "+testType+ " test and you only get "+  attemptsAllowed[0]+" attempts in total"):
+                print("Taking Test:", testName)
+                print("attemptsAllowed =",attemptsAllowed[0])
+                print("testType =",testType)
+                db = shelve.open("test_results/"+testName+"_results")
+                #check if students ID exists in database, if it returns True then do not allow student to take test if test (if test is summative)
+                try:
+                    if testType == 'S':
+                        """WE only have test name to work on :( so i have to check all of the test_overview file for the datetime
                         
-            except KeyError: # if database for test doesn't contain student's userID, it will return KeyError
-                db.close()
-                t1 = Toplevel()
-                t1.geometry("700x300")
-                app = TakeTest.Take_Test(t1, testName, timeLimit, login.username, testType)
+                        #> Duedate is saved in test_list as the 4th index so don't need this 
+                        with open('tests_overview.csv') as csv_file:
+                            csv_reader = csv.reader(csv_file, delimiter=',')
+                            for row in csv_reader:
+                                if row[1] == testName:
+                                    dueDate = row[6]
+                        """
+                        #duedate = parser.parse(dueDate)
+                        duedate = self.turnDueDateToObject(testName) #> Dis be quicker! 
+                        now = datetime.datetime.now()
+                        if now>duedate:#current due date has passed :( therefore don't allow student to take test
+                            messagebox.showinfo("TOO LATE!!!","Sorry, the due date for this assesment has passed already")
+                        else:
+                            db[login.username]
+                            messagebox.showinfo("Can't take summative test!", "You have already sat this test")
+                        db.close()
+
+                    elif testType == 'F':
+                        db[login.username]
+                        attempts = db.get(str(login.username)).toString()[1]
+                        print("You have made {} attempts so far".format(attempts))
+                        if attempts == 3:
+                            messagebox.showinfo("Can't take formative test!", "You have already used your final attempt")
+                            db.close()
+                        else:
+                            db.close()
+                            t1 = Toplevel()
+                            t1.geometry("700x300")
+                            app = TakeTest.Take_Test(t1, testName, timeLimit, login.username, testType, attempts)  
+                            
+                except KeyError: # if database for test doesn't contain student's userID, it will return KeyError
+                    db.close()
+                    t1 = Toplevel()
+                    t1.geometry("700x300")
+                    app = TakeTest.Take_Test(t1, testName, timeLimit, login.username, testType)
         else:
             messagebox.showwarning("ERROR", "Please select a test to take!")
 
