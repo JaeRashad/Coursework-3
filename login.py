@@ -6,7 +6,7 @@ username = str()
 #courses = []
 is_teacher = False
 name = str()
-
+loggedIn = False
 class LogIn(Frame):
 # GUI Setup
     def __init__ (self, master):
@@ -55,7 +55,10 @@ class LogIn(Frame):
                         global is_teacher
                         is_teacher = True
                     print('Welcome, {}'.format(name))
+                    global loggedIn
+                    loggedIn = True
                     root.destroy()
+                    #return loggedIn
             if failed == 1: 
                 print("LOGIN FAILED")
                 self.clearResponse()
