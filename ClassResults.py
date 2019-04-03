@@ -17,16 +17,16 @@ class class_results(Frame):
 		self.grid()
 		self.makeLabels()
 	def makeLabels(self):
-
-		testn = Label(self, text="Cohort results for {}".format(self.testname))
+		#print(self.students)
+		testn = Label(self, text="Cohort results for {}".format(self.testname), font = ('Times',14,'bold'))
 		testn.grid(row = 0, column = 0)
-		StdLbl = Label(self, text="Student")
+		StdLbl = Label(self, text="Student", font = ('Times',12,'italic'))
 		StdLbl.grid(row = 1, column = 0, sticky = W)
-		scoreLbl = Label(self, text="Score")
+		scoreLbl = Label(self, text="Score", font = ('Times',12,'italic'))
 		scoreLbl.grid(row = 1, column = 2)
 		row = 3
 		for i in range(len(self.students)):
-			ID = Label(self, text="{}".format(self.students[i][0]))
+			ID = Label(self, text="{}".format(self.students[i][0].upper()))
 			ID.grid(row = row, column = 0, sticky = W)
 			score = Label(self, text="{}".format(self.students[i][1]))
 			score.grid(row = row, column = 2, sticky = W)
