@@ -34,7 +34,7 @@ class Welcome(Frame):
         scroll = Scrollbar(self, command= self.listProg.yview)
         self.listProg.configure(yscrollcommand=scroll.set)
         self.listProg.grid(row=3, column=0, columnspan=2, sticky=NE)
-        scroll.grid(row=3, column=7, sticky=W)
+        scroll.grid(row=3, column=4, sticky=W)
         modules_list = self.retrieveModules()
         for module in modules_list:
             self.listProg.insert(END, module)
@@ -44,7 +44,7 @@ class Welcome(Frame):
         scroll = Scrollbar(self, command= self.listTest.yview)
         self.listTest.configure(yscrollcommand=scroll.set)
         self.listTest.grid(row=7, column=0, columnspan=2, sticky=NE)
-        scroll.grid(row=7, column=7, sticky=W)
+        scroll.grid(row=7, column=4, sticky=W)
         
     def retrieveModules(self):
         modules_list = []
@@ -144,21 +144,25 @@ class Welcome(Frame):
                 students[i] = (students[i], score)
             question_x = [0]*(len(all_students[0]))
             all_students.pop(len(all_students)-1)
-            for i in range(len(all_students[0])):
-                for student in all_students:
-                    question_x[i] += student[i]
+            try:
+                for i in range(len(all_students[0])):
+                    for student in all_students:
+                        question_x[i] += student[i]
 
-            question_list = []
-            for i in range(len(question_x)):
-                question_x[i] = question_x[i]/len(all_students)*100
-                question_list.append(i+1)
-            print(all_students)
-            print(question_x)
-            
-            import testgrades
-            import ClassResults
-            classResult = ClassResults.class_results(Tk(), students, testname)
-            testgrades.display_graph(question_x, question_list)
+                question_list = []
+                for i in range(len(question_x)):
+
+                    question_x[i] = round(question_x[i]/len(all_students)*100, 1)
+                    question_list.append(i+1)
+                print(all_students)
+                print(question_x)
+                
+                import testgrades
+                import ClassResults
+                classResult = ClassResults.class_results(Tk(), students, testname)
+                testgrades.display_graph(question_x, question_list)
+            except IndexError:
+                messagebox.showwarning("Note", "No students have taken this test yet!")
 
 
         
@@ -371,7 +375,8 @@ class Welcome(Frame):
             int(theTime[0]), int(theTime[1]), int(theTime[2]))
         return dueDate
 #mainloop
-if login.username != "":
+#if login.username != "":
+if login.loggedIn != False:
     root = Tk()
     root.title("HOME "+ str(login.username))
     app = Welcome(root)
