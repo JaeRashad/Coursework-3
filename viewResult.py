@@ -1,4 +1,5 @@
 from tkinter import *
+from tkinter import messagebox
 import csv
 import shelve
 import Feedback
@@ -18,6 +19,7 @@ class View_Results(Frame):
         # get the students number to display
         global users
         global userno
+        users = []
         with open("users.csv") as csv_file:
             csv_reader = csv.reader(csv_file,delimiter=",")
             for row in csv_reader:
@@ -46,40 +48,46 @@ class View_Results(Frame):
 
     def getStudentTest(self):
         # get the students tests they have completed
-        global studentNo
-        global testType
-        textbox = []
-        index = self.listbox.curselection()[0]
-        studentNo = str(self.listbox.get(index))
-        #print(studentName)
-        
-        correctAnswers = []
-        testName = []
-        with open("tests_overview.csv") as csv_file:
-            csv_reader = csv.reader(csv_file,delimiter=",")
-            for row in csv_reader:
-                testName = row[1]
-                db = shelve.open("test_results/"+testName+"_results")
-                testType = row[2]
-                try:
-                    result = db.get(studentNo).toString()
-                    db.close
-                    textbox.append(testName)
-                except:
-                     pass
-            self.listtests.delete(0, END)
-            for i in textbox:
-                        self.listtests.insert(END, i)
+        if self.listbox.curselection()!= ():
+            global studentNo
+            global testType
+            textbox = []
+            index = self.listbox.curselection()[0]
+            studentNo = str(self.listbox.get(index))
+            #print(studentName)
+            
+            correctAnswers = []
+            testName = []
+            with open("tests_overview.csv") as csv_file:
+                csv_reader = csv.reader(csv_file,delimiter=",")
+                for row in csv_reader:
+                    testName = row[1]
+                    db = shelve.open("test_results/"+testName+"_results")
+                    testType = row[2]
+                    try:
+                        result = db.get(studentNo).toString()
+                        db.close
+                        textbox.append(testName)
+                    except:
+                         pass
+                self.listtests.delete(0, END)
+                for i in textbox:
+                            self.listtests.insert(END, i)
+        else:
+            messagebox.showerror("Error", "Please select a student")
 
         
     def getStudentResult(self):
         # retrieve their results 
-        index = self.listtests.curselection()[0]
-        testname = str(self.listtests.get(index))
+        if self.listtests.curselection() != ():
+            index = self.listtests.curselection()[0]
+            testname = str(self.listtests.get(index))
         #username = userno[studentName]
         #print(testname,username)
         #t1 = Toplevel()
-        fdbck = Feedback.Show_Results(Toplevel(), studentNo, testname, testType, 0,True)
+            fdbck = Feedback.Show_Results(Toplevel(), studentNo, testname, testType, 0,True)
+        else:
+            messagebox.showerror("Error", "Select a test!")
 
 
         
@@ -92,7 +100,7 @@ class View_Results(Frame):
 
     def turnDueDateToObject(self, testname):
     	#""" This function converts the test's duedate to a datetime.datetime object """
-        print("Getting duedate and doing stuff...........")
+        #print("Getting duedate and doing stuff...........")
         #> get the duedate
         duedate = [i[4] for i in test_list if i[0] == testname][0].split()
         #> split the string in to date and time
