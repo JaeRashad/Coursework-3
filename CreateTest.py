@@ -71,10 +71,7 @@ class Create_Test(Frame):
         #print(questionNumber)
 
     def load_saved_questions(self):
-        r = csv.reader(open(self.filename, 'a+')) 
-        #> Changed write mode from r to a+ because it was giving an 
-        #> error when clicking Edit Test for tests that exist in tests_overview.csv 
-        #> but don't actually have an existing file yet. 
+        r = csv.reader(open(self.filename, 'a+'))
         old = list(r)
         temp_questionNum = 0
         try:
